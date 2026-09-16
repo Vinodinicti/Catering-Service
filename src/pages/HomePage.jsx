@@ -45,23 +45,23 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
                 From traditional banana leaf wedding feasts to grand corporate galas, we bring authentic master South Indian recipes, live dosa/tawa counters, and white-glove service directly to your venue.
               </p>
 
-              {/* Multi-color CTAs */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+              {/* Multi-color CTAs - 2 Buttons Side-by-Side on 1 Line */}
+              <div className="pt-2 flex flex-row items-center justify-center lg:justify-start gap-2 sm:gap-4 w-full max-w-xl mx-auto lg:mx-0">
                 <button
                   onClick={onOpenBooking}
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-palette-shamrock hover:bg-palette-shamrockDark text-white font-extrabold text-base flex items-center justify-center gap-3 shadow-lilac-md hover:scale-105 active:scale-95 transition-all duration-300"
+                  className="flex-1 sm:flex-none px-3.5 sm:px-7 py-3 sm:py-4 rounded-xl sm:rounded-2xl bg-palette-shamrock hover:bg-palette-shamrockDark text-white font-extrabold text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2.5 shadow-lilac-md hover:scale-105 active:scale-95 transition-all duration-300"
                 >
-                  <Utensils className="w-5 h-5" />
-                  <span>Book Catering Event</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <Utensils className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+                  <span className="whitespace-nowrap">Book Catering Event</span>
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 shrink-0 hidden sm:inline-block" />
                 </button>
                 
                 <button
                   onClick={onOpenEstimate}
-                  className="w-full sm:w-auto px-8 py-4 rounded-2xl border-2 border-palette-eggplant text-palette-eggplant hover:bg-palette-eggplant hover:text-white font-extrabold text-base flex items-center justify-center gap-3 shadow-lilac-sm transition-all duration-300"
+                  className="flex-1 sm:flex-none px-3.5 sm:px-7 py-3 sm:py-4 rounded-xl sm:rounded-2xl border-2 border-palette-eggplant text-palette-eggplant hover:bg-palette-eggplant hover:text-white font-extrabold text-xs sm:text-base flex items-center justify-center gap-1.5 sm:gap-2.5 shadow-lilac-sm transition-all duration-300"
                 >
-                  <Sparkles className="w-5 h-5 text-palette-shamrock" />
-                  <span>Instant Cost Estimator</span>
+                  <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-palette-shamrock shrink-0" />
+                  <span className="whitespace-nowrap">Instant Cost Estimator</span>
                 </button>
               </div>
 
