@@ -62,9 +62,35 @@ export default function BookingFormModal({ isOpen, onClose, initialData = null, 
       ? `RTB-${Math.floor(1000 + Math.random() * 9000)}`
       : `ENQ-${Math.floor(100 + Math.random() * 900)}`;
 
+    const selPkg = CATERING_PACKAGES.find(p => p.id === formData.packageId) || CATERING_PACKAGES[1];
+    const baseRate = selPkg?.pricePerGuest || 0;
+    
+    let addonPerGuest = 0;
+    if (estimateDetails?.addons) {
+      const addonPrices = { mocktailBar: 40, liveDosaBar: 60, kaapiLounge: 30, jigarthandaCounter: 40 };
+      addonPerGuest = Object.keys(estimateDetails.addons).reduce((sum, key) => {
+        return sum + (estimateDetails.addons[key] ? addonPrices[key] : 0);
+      }, 0);
+    }
+
+    const effectiveRate = baseRate + addonPerGuest;
+    const rawSubtotal = effectiveRate * (formData.guestCount || 0);
+    const discountRate = formData.guestCount >= 300 ? 0.08 : formData.guestCount >= 200 ? 0.05 : 0;
+    const discountAmount = Math.round(rawSubtotal * discountRate);
+    const subtotalAfterDiscount = rawSubtotal - discountAmount;
+    const gstTax = Math.round(subtotalAfterDiscount * 0.18);
+    const calculatedTotal = subtotalAfterDiscount + gstTax;
+
+    const finalEstimatedCost = estimateDetails?.estimatedCost && formData.guestCount === estimateDetails.guestCount && formData.packageId === estimateDetails.packageId
+      ? estimateDetails.estimatedCost
+      : calculatedTotal;
+
     const newRecord = {
       id: referenceId,
       ...formData,
+      packageName: selPkg.name,
+      estimatedCost: finalEstimatedCost,
+      costPerHead: effectiveRate,
       status: 'Pending',
       createdAt: new Date().toISOString().split('T')[0],
       formType: activeFormType

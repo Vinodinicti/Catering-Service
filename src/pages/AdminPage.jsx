@@ -22,7 +22,27 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
     tags: ['Chettinad', 'Special']
   });
 
-  const totalRevenueEstimated = bookings.reduce((sum, b) => sum + (b.estimatedCost || 0), 0);
+  const getBookingPackageName = (b) => {
+    if (b.packageName) return b.packageName;
+    const pkg = CATERING_PACKAGES.find(p => p.id === b.packageId);
+    return pkg ? pkg.name : 'South Indian Catering Package';
+  };
+
+  const getBookingCost = (b) => {
+    if (b.estimatedCost && b.estimatedCost > 0) return b.estimatedCost;
+    if (b.estimatedAmount && b.estimatedAmount > 0) return b.estimatedAmount;
+    
+    const pkg = CATERING_PACKAGES.find(p => p.id === b.packageId) || CATERING_PACKAGES[1];
+    const guests = b.guestCount || 50;
+    const baseRate = pkg ? pkg.pricePerGuest : 750;
+    const rawSubtotal = baseRate * guests;
+    const discountRate = guests >= 300 ? 0.08 : guests >= 200 ? 0.05 : 0;
+    const subtotalAfterDiscount = rawSubtotal - (rawSubtotal * discountRate);
+    const gstTax = Math.round(subtotalAfterDiscount * 0.18);
+    return Math.round(subtotalAfterDiscount + gstTax);
+  };
+
+  const totalRevenueEstimated = bookings.reduce((sum, b) => sum + getBookingCost(b), 0);
   const totalBookingsCount = bookings.length;
   const pendingBookingsCount = bookings.filter(b => b.status === 'Pending').length;
   const unreadEnquiriesCount = enquiries.filter(e => e.status === 'Unread').length;
@@ -183,7 +203,7 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
                       <td className="p-3 font-semibold text-palette-eggplant">{b.customerName}</td>
                       <td className="p-3">{b.eventType} ({b.eventDate || 'TBD'})</td>
                       <td className="p-3 font-bold text-palette-eggplant">{b.guestCount}</td>
-                      <td className="p-3 font-bold text-palette-shamrock">₹{(b.estimatedCost || 0).toLocaleString('en-IN')}</td>
+                      <td className="p-3 font-bold text-palette-shamrock">₹{getBookingCost(b).toLocaleString('en-IN')}</td>
                       <td className="p-3">
                         <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
                           b.status === 'Confirmed' ? 'bg-palette-shamrock/20 text-palette-shamrock border border-palette-shamrock/40' : 'bg-palette-lilac/30 text-palette-eggplant border border-palette-lilac/50'
@@ -238,10 +258,10 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
                     </td>
                     <td className="p-3 space-y-0.5">
                       <p className="font-bold text-palette-eggplant">{b.guestCount} Guests</p>
-                      <p className="text-[11px] text-palette-eggplant/60">{b.packageName || 'Standard Package'}</p>
+                      <p className="text-[11px] text-palette-eggplant/60">{getBookingPackageName(b)}</p>
                     </td>
                     <td className="p-3 font-bold text-palette-shamrock font-sans text-sm">
-                      ₹{(b.estimatedCost || 0).toLocaleString('en-IN')}
+                      ₹{getBookingCost(b).toLocaleString('en-IN')}
                     </td>
                     <td className="p-3">
                       <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold ${
