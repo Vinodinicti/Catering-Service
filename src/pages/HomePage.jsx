@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import videoSource from '../assets/royal-catering-video.mp4';
 import Card3DTilt from '../components/3d/Card3DTilt';
 import InstantEstimator from '../components/estimator/InstantEstimator';
@@ -6,6 +6,123 @@ import CountUp from '../components/common/CountUp';
 import { MENU_ITEMS, MENU_CATEGORIES } from '../data/menuData';
 import { LIVE_STATIONS } from '../data/packageData';
 import { Sparkles, Utensils, Star, ArrowRight, Flame, ChevronRight, UtensilsCrossed } from 'lucide-react';
+
+// --- Helper Typewriter Text Component ---
+function TypewriterText({ text, speed = 25, delay = 0, className = '', onComplete }) {
+  const [displayedText, setDisplayedText] = useState('');
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setStarted(true);
+      let index = 0;
+      const intervalId = setInterval(() => {
+        if (index <= text.length) {
+          setDisplayedText(text.slice(0, index));
+          index++;
+        } else {
+          clearInterval(intervalId);
+          if (onComplete) onComplete();
+        }
+      }, speed);
+      return () => clearInterval(intervalId);
+    }, delay);
+
+    return () => clearTimeout(timeoutId);
+  }, [text, speed, delay]);
+
+  if (!started) return <span className={className}>&nbsp;</span>;
+
+  return (
+    <span className={className}>
+      {displayedText}
+      {displayedText.length < text.length && (
+        <span className="inline-block w-1 h-3.5 bg-palette-shamrock ml-0.5 animate-pulse" />
+      )}
+    </span>
+  );
+}
+
+// --- Helper Animated Bespoke Card Component ---
+function AnimatedBespokeCard({ service, idx, setActiveTab }) {
+  const [showOverlay, setShowOverlay] = useState(false);
+  const [titleDone, setTitleDone] = useState(false);
+
+  useEffect(() => {
+    // Stage 1 (Full Image) -> Stage 2 (White overlay slides up covering 1/4 image) after staggered delay
+    const timer = setTimeout(() => {
+      setShowOverlay(true);
+    }, idx * 300 + 400);
+
+    return () => clearTimeout(timer);
+  }, [idx]);
+
+  return (
+    <Card3DTilt className="bg-white border-palette-laceBorder shadow-lilac-md hover:shadow-lilac-lg group rounded-2xl flex flex-col justify-between overflow-hidden relative min-h-[320px] sm:min-h-[380px]">
+      <div className="relative w-full h-full flex flex-col flex-1 justify-between">
+        {/* Stage 1: Full Image Header */}
+        <div className="relative w-full h-44 sm:h-56 overflow-hidden rounded-t-2xl">
+          <img
+            src={service.image}
+            alt={service.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/40 via-transparent to-transparent" />
+          <span className={`absolute top-2.5 right-2.5 z-10 text-[9px] sm:text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md ${service.badgeBg}`}>
+            {service.badge}
+          </span>
+        </div>
+
+        {/* Stage 2 & 3: White Overlay (covers ~1/4 of card) with Typewriter Animation */}
+        <div
+          className={`bg-white/95 backdrop-blur-sm p-3.5 sm:p-5 rounded-b-2xl border-t border-palette-laceBorder shadow-lg transition-all duration-700 ease-out flex flex-col justify-between flex-1 ${
+            showOverlay ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+          }`}
+        >
+          <div className="space-y-1.5 min-h-[90px] sm:min-h-[110px]">
+            <h3 className="font-serif text-sm sm:text-lg font-extrabold text-palette-eggplant group-hover:text-palette-shamrock transition-colors leading-snug">
+              {showOverlay ? (
+                <TypewriterText
+                  text={service.title}
+                  speed={30}
+                  delay={100}
+                  onComplete={() => setTitleDone(true)}
+                />
+              ) : (
+                <span className="opacity-0">{service.title}</span>
+              )}
+            </h3>
+
+            <p className="text-palette-eggplant/90 text-xs sm:text-sm leading-relaxed font-normal">
+              {showOverlay && titleDone ? (
+                <TypewriterText
+                  text={service.desc}
+                  speed={15}
+                  delay={50}
+                />
+              ) : (
+                <span className="opacity-0">{service.desc}</span>
+              )}
+            </p>
+          </div>
+
+          <div className="pt-2">
+            <button
+              onClick={() => {
+                setActiveTab('catering');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+              className="text-xs font-bold text-palette-eggplant flex items-center gap-1 hover:gap-2 transition-all group-hover:text-palette-shamrock"
+            >
+              <span>View Packages</span>
+              <ChevronRight className="w-4 h-4 text-palette-shamrock" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </Card3DTilt>
+  );
+}
 
 export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }) {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -202,41 +319,7 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
                 image: "https://images.unsplash.com/photo-1532635241-17e820acc59f?auto=format&fit=crop&q=80&w=600",
               }
             ].map((service, idx) => (
-              <Card3DTilt key={idx} className="bg-white border-palette-laceBorder shadow-lilac-md hover:shadow-lilac-lg group rounded-2xl flex flex-col justify-between">
-                <div>
-                  <div className="relative h-32 sm:h-48 overflow-hidden rounded-t-2xl">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/60 via-transparent to-transparent" />
-                    <span className={`absolute top-2 right-2 text-[9px] sm:text-[10px] font-extrabold uppercase px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow-sm ${service.badgeBg}`}>
-                      {service.badge}
-                    </span>
-                  </div>
-                  <div className="p-3.5 sm:p-5 space-y-2">
-                    <h3 className="font-serif text-sm sm:text-xl font-extrabold text-palette-eggplant group-hover:text-palette-shamrock transition-colors leading-snug">
-                      {service.title}
-                    </h3>
-                    <p className="text-palette-eggplant/90 text-xs sm:text-sm leading-relaxed font-normal">
-                      {service.desc}
-                    </p>
-                  </div>
-                </div>
-                <div className="p-3.5 sm:p-5 pt-0">
-                  <button
-                    onClick={() => {
-                      setActiveTab('catering');
-                      window.scrollTo({ top: 0, behavior: 'smooth' });
-                    }}
-                    className="pt-1 text-xs font-bold text-palette-eggplant flex items-center gap-1 hover:gap-2 transition-all"
-                  >
-                    <span>View Packages</span>
-                    <ChevronRight className="w-4 h-4 text-palette-shamrock" />
-                  </button>
-                </div>
-              </Card3DTilt>
+              <AnimatedBespokeCard key={idx} service={service} idx={idx} setActiveTab={setActiveTab} />
             ))}
           </div>
         </div>
