@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { MENU_ITEMS, MENU_CATEGORIES } from '../data/menuData';
 import Card3DTilt from '../components/3d/Card3DTilt';
-import { Search, Star, Utensils, X } from 'lucide-react';
+import { Search, Star, Utensils, X, SlidersHorizontal, ArrowUpDown, Filter, RotateCcw } from 'lucide-react';
 
 export default function MenuPage({ onOpenBooking }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [dietaryFilter, setDietaryFilter] = useState('all');
+  const [sortBy, setSortBy] = useState('featured'); // 'featured' | 'price-low' | 'price-high' | 'rating' | 'name'
   const [selectedDishModal, setSelectedDishModal] = useState(null);
 
+  // Filter Dishes
   const filteredDishes = MENU_ITEMS.filter((dish) => {
     const matchesSearch = dish.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                           dish.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -24,99 +26,193 @@ export default function MenuPage({ onOpenBooking }) {
     return matchesSearch && matchesCategory && matchesDietary;
   });
 
+  // Sort Filtered Dishes
+  const sortedDishes = [...filteredDishes].sort((a, b) => {
+    if (sortBy === 'price-low') return a.price - b.price;
+    if (sortBy === 'price-high') return b.price - a.price;
+    if (sortBy === 'rating') return b.rating - a.rating;
+    if (sortBy === 'name') return a.name.localeCompare(b.name);
+    return 0; // 'featured' retains original catalog order
+  });
+
+  const hasActiveFilters = searchQuery !== '' || selectedCategory !== 'all' || dietaryFilter !== 'all' || sortBy !== 'featured';
+
+  const handleResetFilters = () => {
+    setSearchQuery('');
+    setSelectedCategory('all');
+    setDietaryFilter('all');
+    setSortBy('featured');
+  };
+
   return (
-    <div className="pt-28 pb-16 space-y-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-palette-lace text-palette-eggplant">
+    <div className="pt-28 pb-16 space-y-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-palette-lace text-palette-eggplant">
       
       {/* Page Header with Background Image & Eggplant Opacity Overlay */}
-      <section className="relative text-center max-w-5xl mx-auto px-6 py-14 rounded-3xl overflow-hidden shadow-2xl border border-palette-lilac/30 text-white">
+      <section className="relative text-center max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14 rounded-3xl overflow-hidden shadow-2xl border border-palette-lilac/30 text-white">
         <div 
           className="absolute inset-0 bg-cover bg-center scale-105"
           style={{ backgroundImage: `url('/images/dishes/appam_avial.jpg')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-palette-eggplant/95 via-palette-eggplantDark/90 to-palette-eggplant/95 backdrop-blur-xs" />
 
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 bg-white/10 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-2 shadow-inner border border-palette-shamrock/40">
-            <Utensils className="w-4 h-4 text-palette-shamrock" />
+        <div className="relative z-10 space-y-2.5 sm:space-y-3">
+          <div className="inline-flex items-center gap-2 bg-white/10 text-white px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-1 shadow-inner border border-palette-shamrock/40">
+            <Utensils className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-palette-shamrock animate-pulse" />
             <span>Gourmet South Indian Menu Catalog</span>
           </div>
-          <h1 className="font-serif text-4xl sm:text-5xl font-extrabold text-white">
+          <h1 className="font-serif text-3xl sm:text-5xl font-extrabold text-white">
             Our Royal <span className="bg-gradient-to-r from-white via-palette-shamrock to-white bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent">Dakshin Culinary Catalog</span>
           </h1>
-          <p className="text-palette-lilac/90 text-sm sm:text-base max-w-2xl mx-auto">
+          <p className="text-palette-lilac/90 text-xs sm:text-base max-w-2xl mx-auto leading-relaxed">
             Explore our handcrafted South Indian delicacies prepared with authentic spices and master craftsmanship.
           </p>
         </div>
       </section>
 
-      {/* Search Bar & Dietary Filters */}
-      <div className="bg-white p-6 rounded-3xl border border-palette-laceBorder shadow-lilac-md space-y-4">
+      {/* Modern Filter & Sort Control Toolbar */}
+      <div className="bg-white p-4 sm:p-6 rounded-3xl border border-palette-laceBorder shadow-lilac-md space-y-4">
         
-        <div className="flex flex-col md:flex-row gap-4">
-          {/* Search Bar */}
-          <div className="relative flex-1">
-            <Search className="w-5 h-5 absolute left-4 top-3.5 text-palette-eggplant/40" />
-            <input
-              type="text"
-              placeholder="Search dishes by name, spice, or tag (e.g. Biryani, Dosa, Chettinad, Appam)..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-palette-lace border border-palette-laceBorder rounded-2xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock"
-            />
-          </div>
-
-          {/* Dietary Filter Buttons */}
-          <div className="flex items-center gap-2 overflow-x-auto">
-            {[
-              { id: 'all', label: 'All South Dishes' },
-              { id: 'veg', label: 'Pure Veg 🌱' },
-              { id: 'non-veg', label: 'Non-Veg 🍗' },
-              { id: 'special', label: 'Chef Specials 👑' }
-            ].map((filter) => (
-              <button
-                key={filter.id}
-                onClick={() => setDietaryFilter(filter.id)}
-                className={`px-4 py-2.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all border ${
-                  dietaryFilter === filter.id
-                    ? 'bg-palette-eggplant text-white border-palette-eggplant shadow-sm font-extrabold'
-                    : 'bg-palette-lace text-palette-eggplant/80 border-palette-laceBorder hover:border-palette-eggplant/30'
-                }`}
-              >
-                {filter.label}
-              </button>
-            ))}
-          </div>
+        {/* Top Row: Search Input */}
+        <div className="relative">
+          <Search className="w-4 h-4 sm:w-5 sm:h-5 absolute left-4 top-3.5 sm:top-4 text-palette-eggplant/50" />
+          <input
+            type="text"
+            placeholder="Search dishes by name, spice, or tag (e.g. Biryani, Dosa, Chettinad, Appam)..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-11 sm:pl-12 pr-10 py-3 sm:py-3.5 bg-palette-lace border border-palette-laceBorder rounded-2xl text-xs sm:text-sm text-palette-eggplant font-medium placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock focus:ring-2 focus:ring-palette-shamrock/20 transition-all"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="absolute right-3.5 top-3 sm:top-3.5 p-1 rounded-full text-palette-eggplant/50 hover:bg-palette-lilacLight hover:text-palette-eggplant transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
-        {/* Categories Bar */}
-        <div className="flex items-center gap-2 overflow-x-auto pt-2 no-scrollbar">
-          {MENU_CATEGORIES.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                selectedCategory === cat.id
-                  ? 'bg-palette-shamrock text-white shadow-sm font-extrabold'
-                  : 'bg-palette-lilacLight text-palette-eggplant/80 hover:text-palette-eggplant border border-palette-laceBorder'
-              }`}
+        {/* Dropdowns Row: Filter by Category, Filter by Dietary, Sort By */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          
+          {/* Category Dropdown */}
+          <div className="relative">
+            <label className="block text-[10px] font-extrabold uppercase tracking-wider text-palette-eggplant/70 mb-1 flex items-center gap-1">
+              <Filter className="w-3 h-3 text-palette-shamrock" />
+              <span>Category</span>
+            </label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-palette-lace border border-palette-laceBorder rounded-xl text-xs font-bold text-palette-eggplant focus:outline-none focus:border-palette-shamrock cursor-pointer transition-all hover:bg-white"
             >
-              {cat.label}
+              <option value="all">All Categories ({MENU_ITEMS.length})</option>
+              {MENU_CATEGORIES.filter(c => c.id !== 'all').map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Dietary Dropdown */}
+          <div className="relative">
+            <label className="block text-[10px] font-extrabold uppercase tracking-wider text-palette-eggplant/70 mb-1 flex items-center gap-1">
+              <SlidersHorizontal className="w-3 h-3 text-palette-shamrock" />
+              <span>Dietary Preference</span>
+            </label>
+            <select
+              value={dietaryFilter}
+              onChange={(e) => setDietaryFilter(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-palette-lace border border-palette-laceBorder rounded-xl text-xs font-bold text-palette-eggplant focus:outline-none focus:border-palette-shamrock cursor-pointer transition-all hover:bg-white"
+            >
+              <option value="all">All Dietary Types</option>
+              <option value="veg">Pure Veg 🌱</option>
+              <option value="non-veg">Royal Non-Veg 🍗</option>
+              <option value="special">Chef Specials 👑</option>
+            </select>
+          </div>
+
+          {/* Sort Dropdown */}
+          <div className="relative">
+            <label className="block text-[10px] font-extrabold uppercase tracking-wider text-palette-eggplant/70 mb-1 flex items-center gap-1">
+              <ArrowUpDown className="w-3 h-3 text-palette-shamrock" />
+              <span>Sort By</span>
+            </label>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="w-full px-3.5 py-2.5 bg-palette-lace border border-palette-laceBorder rounded-xl text-xs font-bold text-palette-eggplant focus:outline-none focus:border-palette-shamrock cursor-pointer transition-all hover:bg-white"
+            >
+              <option value="featured">Featured (Default)</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Rated ⭐</option>
+              <option value="name">Name (A-Z)</option>
+            </select>
+          </div>
+
+        </div>
+
+        {/* Active Filters Summary & Reset Button */}
+        <div className="pt-2 border-t border-palette-laceBorder flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-extrabold text-[11px] text-palette-eggplant/70 uppercase tracking-wider">
+              Dishes Found: <span className="text-palette-shamrock font-black text-sm">{sortedDishes.length}</span>
+            </span>
+
+            {/* Active Chips */}
+            {selectedCategory !== 'all' && (
+              <span className="inline-flex items-center gap-1 bg-palette-shamrock/15 text-palette-shamrockDark font-bold px-2.5 py-0.5 rounded-full text-[11px]">
+                Category: {MENU_CATEGORIES.find(c => c.id === selectedCategory)?.label}
+                <X className="w-3 h-3 cursor-pointer hover:text-red-500" onClick={() => setSelectedCategory('all')} />
+              </span>
+            )}
+
+            {dietaryFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1 bg-palette-lilac/30 text-palette-eggplant font-bold px-2.5 py-0.5 rounded-full text-[11px]">
+                Diet: {dietaryFilter === 'veg' ? 'Pure Veg 🌱' : dietaryFilter === 'non-veg' ? 'Royal Non-Veg 🍗' : 'Chef Specials 👑'}
+                <X className="w-3 h-3 cursor-pointer hover:text-red-500" onClick={() => setDietaryFilter('all')} />
+              </span>
+            )}
+
+            {sortBy !== 'featured' && (
+              <span className="inline-flex items-center gap-1 bg-palette-eggplant/10 text-palette-eggplant font-bold px-2.5 py-0.5 rounded-full text-[11px]">
+                Sorted: {sortBy === 'price-low' ? 'Price Low-High' : sortBy === 'price-high' ? 'Price High-Low' : sortBy === 'rating' ? 'Highest Rated' : 'A-Z'}
+                <X className="w-3 h-3 cursor-pointer hover:text-red-500" onClick={() => setSortBy('featured')} />
+              </span>
+            )}
+          </div>
+
+          {hasActiveFilters && (
+            <button
+              onClick={handleResetFilters}
+              className="inline-flex items-center gap-1 text-[11px] font-extrabold text-palette-eggplant/70 hover:text-palette-eggplant hover:underline cursor-pointer ml-auto"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset Filters</span>
             </button>
-          ))}
+          )}
         </div>
 
       </div>
 
       {/* Dish Catalog Grid */}
-      {filteredDishes.length === 0 ? (
+      {sortedDishes.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-3xl border border-palette-laceBorder space-y-3 shadow-lilac-sm">
           <Utensils className="w-12 h-12 text-palette-eggplant/40 mx-auto" />
           <h3 className="font-serif text-xl font-bold text-palette-eggplant">No Dishes Found</h3>
-          <p className="text-xs text-palette-eggplant/70">Try adjusting your search criteria or dietary filter.</p>
+          <p className="text-xs text-palette-eggplant/70">Try adjusting your filter or search criteria.</p>
+          <button
+            onClick={handleResetFilters}
+            className="mt-2 px-4 py-2 bg-palette-shamrock text-white text-xs font-bold rounded-xl shadow-sm hover:bg-palette-shamrockDark transition-all"
+          >
+            Reset All Filters
+          </button>
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {filteredDishes.map((dish) => (
+          {sortedDishes.map((dish) => (
             <Card3DTilt key={dish.id} className="bg-white border border-palette-laceBorder group cursor-pointer shadow-lilac-md hover:shadow-xl rounded-2xl flex flex-col justify-between overflow-hidden" onClick={() => setSelectedDishModal(dish)}>
               <div>
                 <div 
