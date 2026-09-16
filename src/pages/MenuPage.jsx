@@ -115,55 +115,59 @@ export default function MenuPage({ onOpenBooking }) {
           <p className="text-xs text-palette-eggplant/70">Try adjusting your search criteria or dietary filter.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredDishes.map((dish) => (
-            <Card3DTilt key={dish.id} className="bg-white border-palette-laceBorder group cursor-pointer shadow-lilac-md hover:shadow-lilac-lg rounded-2xl flex flex-col justify-between" onClick={() => setSelectedDishModal(dish)}>
+            <Card3DTilt key={dish.id} className="bg-white border border-palette-laceBorder group cursor-pointer shadow-lilac-md hover:shadow-xl rounded-2xl flex flex-col justify-between overflow-hidden" onClick={() => setSelectedDishModal(dish)}>
               <div>
                 <div 
                   onClick={() => setSelectedDishModal(dish)}
-                  className="relative h-32 sm:h-56 overflow-hidden rounded-t-2xl"
+                  className="relative h-40 sm:h-52 overflow-hidden rounded-t-2xl"
                 >
                   <img
                     src={dish.image}
                     alt={dish.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/60 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/70 via-transparent to-transparent" />
                   
-                  <span className={`absolute top-2 left-2 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider ${
+                  {/* Dietary Badge */}
+                  <span className={`absolute top-2.5 left-2.5 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider shadow-md ${
                     dish.dietary === 'veg' ? 'bg-palette-shamrock text-white' : 'bg-palette-eggplant text-white'
                   }`}>
                     {dish.dietary === 'veg' ? '● Veg' : '▲ Non-Veg'}
                   </span>
+
+                  {/* High Contrast Price Pill Badge */}
+                  <div className="absolute bottom-2.5 right-2.5 bg-palette-eggplant/90 backdrop-blur-md text-white px-2.5 py-1 rounded-xl text-xs sm:text-sm font-black shadow-md border border-white/20">
+                    ₹{dish.price} <span className="text-[9px] sm:text-[10px] font-semibold text-palette-lilac">/ portion</span>
+                  </div>
                 </div>
 
-                <div className="p-3 sm:p-6 space-y-1.5 sm:space-y-3">
-                  <div className="flex items-start justify-between gap-1">
-                    <h3 className="font-serif text-xs sm:text-lg font-bold text-palette-eggplant group-hover:text-palette-shamrock transition-colors line-clamp-1">
-                      {dish.name}
-                    </h3>
-                    <span className="font-sans font-extrabold text-palette-eggplant text-xs sm:text-lg shrink-0">
-                      ₹{dish.price} <span className="text-[9px] sm:text-xs text-palette-eggplant/70">/ portion</span>
-                    </span>
-                  </div>
+                {/* Content Box */}
+                <div className="p-4 sm:p-5 space-y-2">
+                  <h3 className="font-serif text-base sm:text-lg font-black text-palette-eggplant group-hover:text-palette-shamrock transition-colors leading-snug line-clamp-2">
+                    {dish.name}
+                  </h3>
                   
-                  <p className="text-palette-eggplant/75 text-[10px] sm:text-xs line-clamp-2 leading-relaxed">
+                  <p className="text-palette-eggplant/90 text-xs sm:text-sm font-normal line-clamp-2 sm:line-clamp-3 leading-relaxed">
                     {dish.description}
                   </p>
                 </div>
               </div>
 
-              <div className="p-3 sm:p-6 pt-0">
-                <div className="pt-2 flex items-center justify-between text-[10px] sm:text-[11px] text-palette-eggplant/70 border-t border-palette-laceBorder">
-                  <div className="flex items-center gap-1 text-palette-shamrock font-bold">
-                    <Star className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-palette-shamrock" />
-                    <span>{dish.rating}</span>
+              {/* Footer Rating & Action */}
+              <div className="p-4 sm:p-5 pt-0">
+                <div className="pt-2 flex items-center justify-between text-xs font-bold text-palette-eggplant border-t border-palette-laceBorder">
+                  <div className="inline-flex items-center gap-1 bg-palette-shamrock/15 text-palette-shamrockDark px-2.5 py-1 rounded-md font-black text-xs">
+                    <Star className="w-3.5 h-3.5 fill-palette-shamrockDark text-palette-shamrockDark" />
+                    <span>{dish.rating} Rating</span>
                   </div>
                   <button 
                     onClick={() => setSelectedDishModal(dish)}
-                    className="text-palette-shamrock font-bold hover:underline"
+                    className="text-palette-eggplant group-hover:text-palette-shamrock font-black text-xs hover:underline flex items-center gap-1"
                   >
-                    Details →
+                    <span>View Details</span>
+                    <span>→</span>
                   </button>
                 </div>
               </div>
