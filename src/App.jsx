@@ -188,19 +188,22 @@ export default function App() {
 
       {/* --- MODAL 3: STANDALONE ESTIMATOR POPUP --- */}
       {isEstimateModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
           <div onClick={() => setIsEstimateModalOpen(false)} className="fixed inset-0 bg-palette-eggplant/80 backdrop-blur-md" />
-          <div className="relative w-full max-w-5xl z-10 my-8">
+          <div className="relative w-full max-w-4xl max-h-[85vh] sm:max-h-[90vh] overflow-y-auto bg-white rounded-3xl z-10 my-auto shadow-2xl border border-palette-laceBorder flex flex-col">
             <button
               onClick={() => setIsEstimateModalOpen(false)}
-              className="absolute -top-12 right-0 p-2 text-white hover:text-palette-shamrock bg-palette-eggplant rounded-full border border-white/20 shadow-lg"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 p-2 text-white hover:text-palette-shamrock bg-palette-eggplant/90 hover:bg-palette-eggplant rounded-full border border-white/30 shadow-lg transition-all cursor-pointer"
+              aria-label="Close modal"
             >
-              <X className="w-6 h-6" />
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
-            <InstantEstimator
-              isModal={true}
-              onBookWithEstimate={(estData) => handleOpenBooking(estData)}
-            />
+            <div className="pt-8 sm:pt-4">
+              <InstantEstimator
+                isModal={true}
+                onBookWithEstimate={(estData) => handleOpenBooking(estData)}
+              />
+            </div>
           </div>
         </div>
       )}

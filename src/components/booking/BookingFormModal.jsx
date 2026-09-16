@@ -87,67 +87,68 @@ export default function BookingFormModal({ isOpen, onClose, initialData = null, 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
       
       <div 
         onClick={onClose}
-        className="fixed inset-0 bg-palette-eggplant/70 backdrop-blur-md transition-opacity animate-fadeIn" 
+        className="fixed inset-0 bg-palette-eggplant/80 backdrop-blur-md transition-opacity animate-fadeIn" 
       />
 
-      <div className="relative w-full max-w-2xl bg-white text-palette-eggplant rounded-3xl border border-palette-laceBorder shadow-2xl overflow-hidden z-10 animate-scaleUp">
+      <div className="relative w-full max-w-xl max-h-[85vh] sm:max-h-[90vh] bg-white text-palette-eggplant rounded-3xl border border-palette-laceBorder shadow-2xl overflow-hidden z-10 animate-scaleUp flex flex-col my-auto">
         
         {/* Top Header */}
-        <div className="bg-palette-eggplant p-6 border-b border-white/15 flex items-center justify-between text-white">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-palette-shamrock flex items-center justify-center shadow-md">
-              <UtensilsCrossed className="w-5 h-5 text-white" />
+        <div className="bg-palette-eggplant p-4 sm:p-5 border-b border-white/15 flex items-center justify-between text-white shrink-0">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-palette-shamrock flex items-center justify-center shadow-md shrink-0">
+              <UtensilsCrossed className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             </div>
             <div>
-              <h3 className="font-serif text-xl font-extrabold text-white">
+              <h3 className="font-serif text-base sm:text-xl font-extrabold text-white leading-tight">
                 {activeFormType === 'booking' ? 'Book South Indian Catering' : 'Submit General Enquiry'}
               </h3>
-              <p className="text-xs text-palette-lilac font-medium">The Royal Table Gourmet Services</p>
+              <p className="text-[10px] sm:text-xs text-palette-lilac font-medium">The Royal Table Gourmet Services</p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors"
+            className="p-1.5 sm:p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer shrink-0"
+            aria-label="Close modal"
           >
-            <X className="w-5 h-5" />
+            <X className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
         </div>
 
         {/* Form Type Switcher */}
         {!submittedSuccess && (
-          <div className="flex border-b border-palette-laceBorder bg-palette-lilacLight p-2 gap-2">
+          <div className="flex border-b border-palette-laceBorder bg-palette-lilacLight p-1.5 sm:p-2 gap-2 shrink-0">
             <button
               onClick={() => setActiveFormType('booking')}
-              className={`flex-1 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 ${
+              className={`flex-1 py-2 sm:py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 ${
                 activeFormType === 'booking'
                   ? 'bg-palette-eggplant text-white shadow-sm'
                   : 'text-palette-eggplant/70 hover:text-palette-eggplant'
               }`}
             >
-              <UtensilsCrossed className="w-4 h-4" />
+              <UtensilsCrossed className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>Event Booking Form</span>
             </button>
             <button
               onClick={() => setActiveFormType('enquiry')}
-              className={`flex-1 py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 ${
+              className={`flex-1 py-2 sm:py-2.5 rounded-xl text-xs font-extrabold transition-all flex items-center justify-center gap-2 ${
                 activeFormType === 'enquiry'
                   ? 'bg-palette-eggplant text-white shadow-sm'
                   : 'text-palette-eggplant/70 hover:text-palette-eggplant'
               }`}
             >
-              <Mail className="w-4 h-4" />
+              <Mail className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               <span>General Inquiry Form</span>
             </button>
           </div>
         )}
 
         {/* Modal Body */}
-        <div className="p-6 sm:p-8 max-h-[75vh] overflow-y-auto bg-white">
+        <div className="p-4 sm:p-6 overflow-y-auto bg-white flex-1">
           
           {submittedSuccess ? (
             <div className="text-center py-6 space-y-5">

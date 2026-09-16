@@ -20,7 +20,7 @@ export default function AdminAuthModal({ isOpen, onClose, onAuthenticate }) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
       {/* Backdrop */}
       <div 
         onClick={onClose}
@@ -28,11 +28,12 @@ export default function AdminAuthModal({ isOpen, onClose, onAuthenticate }) {
       />
 
       {/* Modal Dialog */}
-      <div className="relative w-full max-w-md bg-white text-palette-eggplant rounded-3xl border border-palette-laceBorder shadow-2xl overflow-hidden z-10 animate-scaleUp p-6 sm:p-8 space-y-6">
+      <div className="relative w-full max-w-md max-h-[85vh] sm:max-h-[90vh] overflow-y-auto bg-white text-palette-eggplant rounded-3xl border border-palette-laceBorder shadow-2xl z-10 animate-scaleUp p-5 sm:p-8 space-y-5 my-auto">
         
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 text-palette-eggplant/60 hover:text-palette-eggplant rounded-full hover:bg-palette-lace transition-colors"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 text-palette-eggplant/60 hover:text-palette-eggplant rounded-full hover:bg-palette-lace transition-colors cursor-pointer"
+          aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>

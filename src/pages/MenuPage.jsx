@@ -274,58 +274,63 @@ export default function MenuPage({ onOpenBooking }) {
 
       {/* Dish Detail Modal */}
       {selectedDishModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div onClick={() => setSelectedDishModal(null)} className="fixed inset-0 bg-palette-eggplant/70 backdrop-blur-md" />
-          <div className="relative w-full max-w-lg bg-white text-palette-eggplant rounded-3xl border border-palette-laceBorder shadow-lilac-lg overflow-hidden z-10 animate-scaleUp">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div onClick={() => setSelectedDishModal(null)} className="fixed inset-0 bg-palette-eggplant/80 backdrop-blur-md" />
+          <div className="relative w-full max-w-md sm:max-w-lg max-h-[85vh] sm:max-h-[90vh] bg-white text-palette-eggplant rounded-3xl border border-palette-laceBorder shadow-2xl overflow-y-auto z-10 animate-scaleUp flex flex-col my-auto">
             
-            <div className="relative h-64">
+            {/* Top Close Button (Always visible on mobile & desktop) */}
+            <button
+              onClick={() => setSelectedDishModal(null)}
+              className="absolute top-3 right-3 z-30 p-2 rounded-full bg-palette-eggplant/90 text-white hover:bg-palette-eggplant shadow-xl border border-white/40 backdrop-blur-md transition-transform active:scale-95 cursor-pointer"
+              aria-label="Close modal"
+            >
+              <X className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+
+            {/* Dish Image Banner */}
+            <div className="relative h-40 sm:h-52 w-full shrink-0 overflow-hidden rounded-t-3xl">
               <img
                 src={selectedDishModal.image}
                 alt={selectedDishModal.name}
                 className="w-full h-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/60 via-transparent to-transparent" />
-              <button
-                onClick={() => setSelectedDishModal(null)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-palette-eggplant/80 text-white hover:bg-palette-eggplant"
-              >
-                <X className="w-5 h-5" />
-              </button>
+              <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/70 via-transparent to-transparent" />
             </div>
 
-            <div className="p-6 space-y-4">
-              <div className="flex items-start justify-between">
+            {/* Content Body */}
+            <div className="p-4 sm:p-6 space-y-3 sm:space-y-4 flex-1">
+              <div className="flex items-start justify-between gap-3">
                 <div>
-                  <h3 className="font-serif text-2xl font-extrabold text-palette-eggplant">{selectedDishModal.name}</h3>
+                  <h3 className="font-serif text-xl sm:text-2xl font-extrabold text-palette-eggplant leading-snug">{selectedDishModal.name}</h3>
                   <p className="text-xs text-palette-shamrock font-bold mt-0.5">
                     {selectedDishModal.dietary === 'veg' ? 'Pure Vegetarian Delicacy' : 'Royal Non-Vegetarian Special'}
                   </p>
                 </div>
-                <span className="font-sans text-2xl font-extrabold text-palette-eggplant">
+                <span className="font-sans text-xl sm:text-2xl font-extrabold text-palette-eggplant shrink-0">
                   ₹{selectedDishModal.price} <span className="text-xs font-semibold text-palette-eggplant/70">/ portion</span>
                 </span>
               </div>
 
-              <p className="text-palette-eggplant/80 text-sm leading-relaxed">
+              <p className="text-palette-eggplant/80 text-xs sm:text-sm leading-relaxed">
                 {selectedDishModal.description}
               </p>
 
-              {/* Lilac Tag Chips */}
-              <div className="flex items-center gap-2 pt-2">
+              {/* Tag Chips */}
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-1">
                 {selectedDishModal.tags.map(tag => (
-                  <span key={tag} className="bg-palette-lilac/30 text-palette-eggplant px-3 py-1 rounded-full text-xs font-bold border border-palette-lilac/50">
+                  <span key={tag} className="bg-palette-lilac/30 text-palette-eggplant px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full text-[11px] font-bold border border-palette-lilac/50">
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <div className="pt-4 flex gap-3">
+              <div className="pt-2 sm:pt-3">
                 <button
                   onClick={() => {
                     setSelectedDishModal(null);
                     onOpenBooking();
                   }}
-                  className="flex-1 py-3 bg-palette-shamrock hover:bg-palette-shamrockDark text-white font-extrabold rounded-2xl shadow-md"
+                  className="w-full py-3 bg-palette-shamrock hover:bg-palette-shamrockDark text-white font-extrabold text-xs sm:text-sm rounded-2xl shadow-md hover:scale-[1.01] active:scale-95 transition-all"
                 >
                   Book Catering with this Dish
                 </button>

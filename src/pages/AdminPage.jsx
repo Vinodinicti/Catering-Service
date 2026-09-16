@@ -374,10 +374,17 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
 
       {/* Add New Dish Modal */}
       {showAddDishModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div onClick={() => setShowAddDishModal(false)} className="fixed inset-0 bg-palette-eggplant/70 backdrop-blur-md" />
-          <div className="relative w-full max-w-md bg-white p-6 rounded-3xl border border-palette-laceBorder shadow-2xl z-10 space-y-4 text-palette-eggplant">
-            <h3 className="font-serif text-xl font-extrabold text-palette-eggplant">Add New Dish to Catalog</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div onClick={() => setShowAddDishModal(false)} className="fixed inset-0 bg-palette-eggplant/80 backdrop-blur-md" />
+          <div className="relative w-full max-w-md max-h-[85vh] sm:max-h-[90vh] overflow-y-auto bg-white p-5 sm:p-6 rounded-3xl border border-palette-laceBorder shadow-2xl z-10 space-y-4 text-palette-eggplant my-auto">
+            <button
+              onClick={() => setShowAddDishModal(false)}
+              className="absolute top-4 right-4 p-1.5 rounded-full text-palette-eggplant/60 hover:text-palette-eggplant hover:bg-palette-lace transition-colors"
+              aria-label="Close modal"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            <h3 className="font-serif text-xl font-extrabold text-palette-eggplant pr-8">Add New Dish to Catalog</h3>
 
             <form onSubmit={handleAddDish} className="space-y-3 text-xs text-palette-eggplant">
               <div>

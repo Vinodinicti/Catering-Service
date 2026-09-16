@@ -33,12 +33,12 @@ export default function FestiveWelcomeModal({ isOpen, onClose, onOpenEstimate })
   });
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-palette-eggplant/80 backdrop-blur-md transition-all duration-500 animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-palette-eggplant/80 backdrop-blur-md transition-all duration-500 animate-fadeIn overflow-y-auto">
       {/* Falling Festive Confetti */}
       {confettiItems}
 
       {/* Modal Card */}
-      <div className="relative w-full max-w-lg bg-palette-lace border-2 border-palette-shamrock rounded-3xl p-6 sm:p-8 shadow-2xl shadow-palette-eggplant/50 text-center overflow-hidden transform transition-transform duration-300 scale-100">
+      <div className="relative w-full max-w-md sm:max-w-lg max-h-[85vh] sm:max-h-[90vh] overflow-y-auto bg-palette-lace border-2 border-palette-shamrock rounded-3xl p-5 sm:p-8 shadow-2xl shadow-palette-eggplant/50 text-center transform transition-transform duration-300 scale-100 my-auto">
         
         {/* Decorative Festive Ambient Glows */}
         <div className="absolute -top-16 -left-16 w-40 h-40 bg-palette-lilac/30 rounded-full blur-2xl pointer-events-none" />
@@ -47,16 +47,17 @@ export default function FestiveWelcomeModal({ isOpen, onClose, onOpenEstimate })
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full bg-palette-eggplant/10 hover:bg-palette-eggplant text-palette-eggplant hover:text-white transition-all duration-200 z-10"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 rounded-full bg-palette-eggplant/10 hover:bg-palette-eggplant text-palette-eggplant hover:text-white transition-all duration-200 z-20 cursor-pointer"
+          aria-label="Close modal"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4 sm:w-5 sm:h-5" />
         </button>
 
         {/* Festive Header Badge */}
-        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-palette-eggplant to-palette-denim text-palette-lace px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider shadow-md mb-4 animate-bounce-subtle">
-          <PartyPopper className="w-4 h-4 text-palette-shamrock animate-spin-slow" />
+        <div className="inline-flex items-center gap-2 bg-gradient-to-r from-palette-eggplant to-palette-denim text-palette-lace px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-extrabold uppercase tracking-wider shadow-md mb-3 sm:mb-4 animate-bounce-subtle">
+          <PartyPopper className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-palette-shamrock animate-spin-slow" />
           <span>Festive Celebration Mode</span>
-          <Sparkles className="w-4 h-4 text-palette-lilac" />
+          <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-palette-lilac" />
         </div>
 
         {/* Royal Title */}
