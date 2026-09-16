@@ -2,6 +2,7 @@ import React from 'react';
 import { Sparkles, ChefHat, CheckCircle, Users, Award, Trophy, Star, TrendingUp } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Card3DTilt from '../components/3d/Card3DTilt';
+import CountUp from '../components/common/CountUp';
 
 export default function AboutPage({ onOpenBooking }) {
   const chefs = [
@@ -177,8 +178,9 @@ export default function AboutPage({ onOpenBooking }) {
                       <div className="w-10 h-10 mx-auto rounded-xl bg-white/10 flex items-center justify-center border border-white/20 shadow-sm group-hover:scale-110 transition-transform">
                         <IconComponent className={`w-5 h-5 ${metric.accent}`} />
                       </div>
-                      <div className={`font-sans text-3xl sm:text-4xl font-extrabold ${metric.accent} tracking-tight drop-shadow-sm`}>
-                        {metric.number}
+
+                      <div className={`font-sans text-3xl sm:text-4xl font-black ${metric.accent} tracking-tight drop-shadow-sm`}>
+                        <CountUp value={metric.number} duration={2200} />
                       </div>
                       <div className="text-xs text-palette-shamrock font-bold uppercase tracking-wider">
                         {metric.label}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import videoSource from '../assets/royal-catering-video.mp4';
 import Card3DTilt from '../components/3d/Card3DTilt';
 import InstantEstimator from '../components/estimator/InstantEstimator';
+import CountUp from '../components/common/CountUp';
 import { MENU_ITEMS, MENU_CATEGORIES } from '../data/menuData';
 import { LIVE_STATIONS } from '../data/packageData';
 import { Sparkles, Utensils, Star, ArrowRight, Flame, ChevronRight, UtensilsCrossed } from 'lucide-react';
@@ -90,25 +91,25 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
                 </button>
               </div>
 
-              {/* Trust Badges */}
+              {/* Trust Badges with Number Counting Animation */}
               <div className="pt-6 grid grid-cols-3 gap-4 border-t border-palette-laceBorder max-w-lg mx-auto lg:mx-0">
-                <div className="transform hover:scale-105 transition-transform">
-                  <h4 className="font-sans text-2xl sm:text-4xl font-black text-palette-shamrock tracking-tight drop-shadow-sm">
-                    <AnimatedCounter target={500} suffix="+" duration={2000} />
+                <div>
+                  <h4 className="font-sans text-2xl sm:text-3xl font-black text-palette-shamrock tracking-tight">
+                    <CountUp value="500+" duration={2200} />
                   </h4>
-                  <p className="text-xs text-palette-eggplant/80 font-bold mt-1">Royal Events Served</p>
+                  <p className="text-xs text-palette-eggplant/75 font-bold">Royal Events Served</p>
                 </div>
-                <div className="transform hover:scale-105 transition-transform">
-                  <h4 className="font-sans text-2xl sm:text-4xl font-black text-palette-eggplant tracking-tight drop-shadow-sm">
-                    <AnimatedCounter target={40} suffix="+" duration={1800} />
+                <div>
+                  <h4 className="font-sans text-2xl sm:text-3xl font-black text-palette-eggplant tracking-tight">
+                    <CountUp value="40+" duration={2000} />
                   </h4>
-                  <p className="text-xs text-palette-eggplant/80 font-bold mt-1">Master Culinary Chefs</p>
+                  <p className="text-xs text-palette-eggplant/75 font-bold">Master Culinary Chefs</p>
                 </div>
-                <div className="transform hover:scale-105 transition-transform">
-                  <h4 className="font-sans text-2xl sm:text-4xl font-black text-palette-shamrock tracking-tight drop-shadow-sm">
-                    <AnimatedCounter target={99.8} suffix="%" decimals={1} duration={2200} />
+                <div>
+                  <h4 className="font-sans text-2xl sm:text-3xl font-black text-palette-shamrock tracking-tight">
+                    <CountUp value="99.8%" duration={2400} />
                   </h4>
-                  <p className="text-xs text-palette-eggplant/80 font-bold mt-1">Guest Satisfaction</p>
+                  <p className="text-xs text-palette-eggplant/75 font-bold">Guest Satisfaction</p>
                 </div>
               </div>
 
