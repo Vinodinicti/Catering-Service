@@ -3,6 +3,7 @@ import { Sparkles, ChefHat, CheckCircle, Users, Award, Trophy, Star, TrendingUp 
 import { motion } from 'framer-motion';
 import Card3DTilt from '../components/3d/Card3DTilt';
 import CountUp from '../components/common/CountUp';
+import videoSource from '../assets/royal-catering-video.mp4';
 
 export default function AboutPage({ onOpenBooking }) {
   const chefs = [
@@ -11,7 +12,7 @@ export default function AboutPage({ onOpenBooking }) {
       title: "Executive Master Culinary Director",
       experience: "25+ Years Experience",
       specialty: "Royal Dakshin & Chettinad Feast Cuisine",
-      image: "/images/chefs/chef_vikram.jpg",
+      video: "/videos/this_chef_saying_hii_and_cooki.mp4",
       bio: "Former head chef at heritage royal palaces, specializing in traditional 21-item banana leaf feasts and authentic Chettinad spice roasts."
     },
     {
@@ -19,7 +20,7 @@ export default function AboutPage({ onOpenBooking }) {
       title: "Head Pastry & Payasam Artiste",
       experience: "18 Years Experience",
       specialty: "Tender Coconut Elaneer Payasam & Fusion Sweets",
-      image: "/images/chefs/chef_priya.jpg",
+      video: "/videos/this_chef_eating_one_spoon_pay.mp4",
       bio: "Master confectioner bringing theatrical live Madurai Jigarthanda counters and saffron-infused royal payasam to life."
     },
     {
@@ -27,35 +28,75 @@ export default function AboutPage({ onOpenBooking }) {
       title: "Global & Tawa Grill Specialist",
       experience: "15 Years Experience",
       specialty: "Live Mysuru Dosa Bar & Mangalorean Tawa Grill",
-      image: "/images/chefs/chef_rajesh.jpg",
+      video: "/videos/this_chef_making_dosa_folding.mp4",
       bio: "Curates live interactive cooking bars, hand-stretched coin parottas, and authentic Mysuru crispy dosa & tawa sear stations."
     }
   ];
 
   return (
-    <div className="pt-28 pb-16 space-y-20 bg-palette-lace text-palette-eggplant">
+    <div className="pt-20 lg:pt-24 pb-16 space-y-16 bg-palette-lace text-palette-eggplant">
       
-      {/* Header Banner with Background Image & Eggplant Opacity Overlay */}
-      <section className="relative text-center max-w-5xl mx-auto px-6 py-14 rounded-3xl overflow-hidden shadow-2xl border border-palette-lilac/30 text-white">
-        <div 
-          className="absolute inset-0 bg-cover bg-center scale-105"
+      {/* Header Banner with Background Image & Medium Opacity Overlay */}
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="relative text-center max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 rounded-3xl overflow-hidden shadow-2xl border border-palette-lilac/40 text-white group"
+      >
+        {/* Slow Panoramic Zoom Background Image */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.08, 1],
+            rotate: [0, 0.4, 0]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=1600')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-palette-eggplant/95 via-palette-eggplantDark/90 to-palette-eggplant/95 backdrop-blur-xs" />
+        
+        {/* Medium Opacity Eggplant Overlay */}
+        <div className="absolute inset-0 bg-palette-eggplant/75 backdrop-blur-[2px] transition-opacity duration-500 group-hover:bg-palette-eggplant/70" />
 
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 bg-white/10 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-2 shadow-inner border border-palette-shamrock/40">
+        {/* Ambient Floating Glowing Orbs */}
+        <motion.div 
+          animate={{ x: [0, 30, 0], y: [0, -20, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-16 -left-16 w-80 h-80 bg-palette-shamrock/30 rounded-full blur-3xl pointer-events-none" 
+        />
+
+        <div className="relative z-10 space-y-3.5 max-w-3xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider shadow-lg border border-white/30"
+          >
             <Sparkles className="w-4 h-4 text-palette-shamrock animate-pulse" />
             <span>Our Heritage & Culinary Philosophy</span>
-          </div>
-          <h1 className="font-serif text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-            Where South Indian Tradition Meets <span className="bg-gradient-to-r from-white via-palette-shamrock to-white bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent">Royal Elegance</span>
-          </h1>
-          <p className="text-palette-lilac/90 text-base sm:text-lg mt-3 max-w-2xl mx-auto leading-relaxed">
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight drop-shadow-md"
+          >
+            Where South Indian Tradition Meets{' '}
+            <span className="bg-gradient-to-r from-palette-shamrock via-white to-palette-shamrock bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent drop-shadow">
+              Royal Elegance
+            </span>
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="text-white/95 text-xs sm:text-base max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-sm"
+          >
             Founded with a passion for preserving authentic South Indian heritage recipes while elevating modern presentation, The Royal Table has catered over 500 prestigious celebrations.
-          </p>
+          </motion.p>
         </div>
-      </section>
+      </motion.section>
 
       {/* --- Key Impact Numbers & Metrics --- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -230,13 +271,16 @@ export default function AboutPage({ onOpenBooking }) {
           </div>
 
           <div className="relative">
-            <div className="relative rounded-3xl overflow-hidden border border-palette-laceBorder shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1555244162-803834f70033?auto=format&fit=crop&q=80&w=800"
-                alt="Royal Kitchen & Catering"
-                className="w-full h-[450px] object-cover"
+            <div className="relative rounded-3xl overflow-hidden border border-palette-laceBorder shadow-xl bg-palette-eggplant">
+              <video
+                src={videoSource}
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-[350px] sm:h-[450px] object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/50 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/50 via-transparent to-transparent pointer-events-none" />
             </div>
 
             <div className="absolute -bottom-6 -left-6 bg-white border border-palette-laceBorder p-5 rounded-2xl shadow-xl flex items-center gap-4">
@@ -271,12 +315,16 @@ export default function AboutPage({ onOpenBooking }) {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {chefs.map((chef, idx) => (
-              <Card3DTilt key={idx} className="bg-white border-palette-laceBorder group shadow-md hover:shadow-xl rounded-2xl">
-                <div className="relative h-64 overflow-hidden rounded-t-2xl">
-                  <img
-                    src={chef.image}
-                    alt={chef.name}
+              <Card3DTilt key={idx} onClick={() => onOpenBooking()} className="bg-white border-palette-laceBorder group shadow-md hover:shadow-xl rounded-2xl cursor-pointer">
+                <div className="relative h-64 overflow-hidden rounded-t-2xl bg-palette-eggplant">
+                  <video
+                    src={chef.video}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    aria-label={chef.name}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/60 via-transparent to-transparent" />
                   <span className="absolute bottom-3 left-3 bg-palette-shamrock text-white text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-sm">

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { MENU_ITEMS, MENU_CATEGORIES } from '../data/menuData';
 import Card3DTilt from '../components/3d/Card3DTilt';
-import { Search, Star, Utensils, X, SlidersHorizontal, ArrowUpDown, Filter, RotateCcw } from 'lucide-react';
+import { Search, Star, Utensils, X, SlidersHorizontal, ArrowUpDown, Filter, RotateCcw, Sparkles, Flame } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 export default function MenuPage({ onOpenBooking }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -47,27 +48,57 @@ export default function MenuPage({ onOpenBooking }) {
   return (
     <div className="pt-28 pb-16 space-y-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-palette-lace text-palette-eggplant">
       
-      {/* Page Header with Background Image & Eggplant Opacity Overlay */}
-      <section className="relative text-center max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14 rounded-3xl overflow-hidden shadow-2xl border border-palette-lilac/30 text-white">
-        <div 
-          className="absolute inset-0 bg-cover bg-center scale-105"
+      {/* Page Header Banner with Background Image & Medium Opacity Overlay */}
+      <motion.section 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="relative text-center max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 rounded-3xl overflow-hidden shadow-2xl border border-palette-lilac/40 text-white group"
+      >
+        {/* Background Image Slow Pulse Zoom */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.07, 1],
+            y: [0, -8, 0]
+          }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('/images/dishes/appam_avial.jpg')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-palette-eggplant/95 via-palette-eggplantDark/90 to-palette-eggplant/95 backdrop-blur-xs" />
+        
+        {/* Medium Opacity Eggplant Overlay */}
+        <div className="absolute inset-0 bg-palette-eggplant/75 backdrop-blur-[2px] transition-opacity duration-500 group-hover:bg-palette-eggplant/70" />
 
-        <div className="relative z-10 space-y-2.5 sm:space-y-3">
-          <div className="inline-flex items-center gap-2 bg-white/10 text-white px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-1 shadow-inner border border-palette-shamrock/40">
+        <div className="relative z-10 space-y-3.5 max-w-3xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider shadow-lg border border-white/30"
+          >
             <Utensils className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-palette-shamrock animate-pulse" />
             <span>Gourmet South Indian Menu Catalog</span>
-          </div>
-          <h1 className="font-serif text-3xl sm:text-5xl font-extrabold text-white">
-            Our Royal <span className="bg-gradient-to-r from-white via-palette-shamrock to-white bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent">Dakshin Culinary Catalog</span>
-          </h1>
-          <p className="text-palette-lilac/90 text-xs sm:text-base max-w-2xl mx-auto leading-relaxed">
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="font-serif text-3xl sm:text-5xl font-extrabold text-white leading-tight drop-shadow-md"
+          >
+            Our Royal <span className="bg-gradient-to-r from-palette-shamrock via-white to-palette-shamrock bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent">Dakshin Culinary Catalog</span>
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="text-white/95 text-xs sm:text-base max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-sm"
+          >
             Explore our handcrafted South Indian delicacies prepared with authentic spices and master craftsmanship.
-          </p>
+          </motion.p>
         </div>
-      </section>
+      </motion.section>
 
       {/* Modern Filter & Sort Control Toolbar */}
       <div className="bg-white p-4 sm:p-6 rounded-3xl border border-palette-laceBorder shadow-lilac-md space-y-4">

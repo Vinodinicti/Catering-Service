@@ -7,120 +7,310 @@ import { MENU_ITEMS, MENU_CATEGORIES } from '../data/menuData';
 import { LIVE_STATIONS } from '../data/packageData';
 import { Sparkles, Utensils, Star, ArrowRight, Flame, ChevronRight, UtensilsCrossed } from 'lucide-react';
 
-// --- Helper Typewriter Text Component ---
-function TypewriterText({ text, speed = 25, delay = 0, className = '', onComplete }) {
-  const [displayedText, setDisplayedText] = useState('');
+// --- Helper Word-by-Word Staggered Text Reveal Component ---
+function WordRevealText({ text, speed = 50, delay = 0, className = '', onComplete }) {
+  const words = React.useMemo(() => text.split(' '), [text]);
+  const [visibleCount, setVisibleCount] = useState(0);
   const [started, setStarted] = useState(false);
 
   useEffect(() => {
+    let intervalId;
     const timeoutId = setTimeout(() => {
       setStarted(true);
-      let index = 0;
-      const intervalId = setInterval(() => {
-        if (index <= text.length) {
-          setDisplayedText(text.slice(0, index));
-          index++;
+      let count = 1;
+      setVisibleCount(1);
+      intervalId = setInterval(() => {
+        if (count <= words.length) {
+          setVisibleCount(count);
+          count++;
         } else {
           clearInterval(intervalId);
           if (onComplete) onComplete();
         }
       }, speed);
-      return () => clearInterval(intervalId);
     }, delay);
 
-    return () => clearTimeout(timeoutId);
-  }, [text, speed, delay]);
+    return () => {
+      clearTimeout(timeoutId);
+      if (intervalId) clearInterval(intervalId);
+    };
+  }, [words, speed, delay, onComplete]);
 
   if (!started) return <span className={className}>&nbsp;</span>;
 
   return (
-    <span className={className}>
-      {displayedText}
-      {displayedText.length < text.length && (
-        <span className="inline-block w-1 h-3.5 bg-palette-shamrock ml-0.5 animate-pulse" />
-      )}
+    <span className={`${className} inline-wrap`}>
+      {words.map((word, i) => (
+        <span
+          key={i}
+          className={`inline-block transition-all duration-300 ease-out mr-1 ${
+            i < visibleCount
+              ? 'opacity-100 translate-y-0 blur-0'
+              : 'opacity-0 translate-y-2 blur-[2px]'
+          }`}
+        >
+          {word}
+        </span>
+      ))}
     </span>
   );
 }
 
 // --- Helper Animated Bespoke Card Component ---
-function AnimatedBespokeCard({ service, idx, setActiveTab }) {
+function AnimatedBespokeCard({ service, idx, activeCardIdx, onCardComplete, setActiveTab }) {
+  const isMyTurn = idx === activeCardIdx;
+  const isAlreadyFinished = idx < activeCardIdx;
   const [showOverlay, setShowOverlay] = useState(false);
   const [titleDone, setTitleDone] = useState(false);
 
   useEffect(() => {
-    // Stage 1 (Full Image) -> Stage 2 (White overlay slides up covering 1/4 image) after staggered delay
-    const timer = setTimeout(() => {
-      setShowOverlay(true);
-    }, idx * 300 + 400);
+    if (isMyTurn && !showOverlay) {
+      // Stage 1 -> Stage 2: Slide up white overlay over lower portion of full image
+      const timer = setTimeout(() => {
+        setShowOverlay(true);
+      }, 150);
 
-    return () => clearTimeout(timer);
-  }, [idx]);
+      return () => clearTimeout(timer);
+    }
+  }, [isMyTurn, showOverlay]);
+
+  useEffect(() => {
+    if (isAlreadyFinished) {
+      setShowOverlay(true);
+      setTitleDone(true);
+    }
+  }, [isAlreadyFinished]);
 
   return (
-    <Card3DTilt className="bg-white border-palette-laceBorder shadow-lilac-md hover:shadow-lilac-lg group rounded-2xl flex flex-col justify-between overflow-hidden relative min-h-[320px] sm:min-h-[380px]">
-      <div className="relative w-full h-full flex flex-col flex-1 justify-between">
-        {/* Stage 1: Full Image Header */}
-        <div className="relative w-full h-44 sm:h-56 overflow-hidden rounded-t-2xl">
+    <div className="w-full">
+      <Card3DTilt
+        onClick={() => {
+          setActiveTab('catering');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        className="bg-white border-palette-laceBorder shadow-lilac-md hover:shadow-lilac-lg group rounded-2xl relative h-[360px] sm:h-[390px] overflow-hidden cursor-pointer"
+      >
+        {/* Stage 1: Full Card Image */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden rounded-2xl">
           <img
             src={service.image}
             alt={service.title}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-700"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-palette-eggplant/40 via-transparent to-transparent" />
-          <span className={`absolute top-2.5 right-2.5 z-10 text-[9px] sm:text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full shadow-md ${service.badgeBg}`}>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+          <span className={`absolute top-2 right-2 sm:top-3 sm:right-3 z-10 text-[8px] sm:text-[10px] font-extrabold uppercase px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full shadow-md ${service.badgeBg}`}>
             {service.badge}
           </span>
         </div>
 
-        {/* Stage 2 & 3: White Overlay (covers ~1/4 of card) with Typewriter Animation */}
+        {/* Stage 2 & 3: White Overlay (covers lower area cleanly on mobile & desktop) with Word Reveal Text */}
         <div
-          className={`bg-white/95 backdrop-blur-sm p-3.5 sm:p-5 rounded-b-2xl border-t border-palette-laceBorder shadow-lg transition-all duration-700 ease-out flex flex-col justify-between flex-1 ${
-            showOverlay ? 'translate-y-0 opacity-100' : 'translate-y-6 opacity-0'
+          className={`absolute bottom-0 inset-x-0 bg-white/95 backdrop-blur-md p-2.5 sm:p-4 rounded-b-2xl border-t border-palette-laceBorder shadow-2xl transition-transform duration-600 ease-out z-20 flex flex-col justify-between ${
+            showOverlay ? 'translate-y-0' : 'translate-y-full'
           }`}
+          style={{ minHeight: '52%', maxHeight: '68%' }}
         >
-          <div className="space-y-1.5 min-h-[90px] sm:min-h-[110px]">
-            <h3 className="font-serif text-sm sm:text-lg font-extrabold text-palette-eggplant group-hover:text-palette-shamrock transition-colors leading-snug">
+          <div className="space-y-1 overflow-hidden">
+            <h3 className="font-serif text-[11px] sm:text-base font-extrabold text-palette-eggplant group-hover:text-palette-shamrock transition-colors leading-tight sm:leading-snug line-clamp-2">
               {showOverlay ? (
-                <TypewriterText
-                  text={service.title}
-                  speed={30}
-                  delay={100}
-                  onComplete={() => setTitleDone(true)}
-                />
+                isAlreadyFinished ? (
+                  service.title
+                ) : (
+                  <WordRevealText
+                    text={service.title}
+                    speed={60}
+                    delay={100}
+                    onComplete={() => setTitleDone(true)}
+                  />
+                )
               ) : (
                 <span className="opacity-0">{service.title}</span>
               )}
             </h3>
 
-            <p className="text-palette-eggplant/90 text-xs sm:text-sm leading-relaxed font-normal">
-              {showOverlay && titleDone ? (
-                <TypewriterText
-                  text={service.desc}
-                  speed={15}
-                  delay={50}
-                />
+            <p className="text-palette-eggplant/85 text-[10px] sm:text-xs leading-tight sm:leading-relaxed font-normal line-clamp-3 sm:line-clamp-none">
+              {showOverlay && (titleDone || isAlreadyFinished) ? (
+                isAlreadyFinished ? (
+                  service.desc
+                ) : (
+                  <WordRevealText
+                    text={service.desc}
+                    speed={35}
+                    delay={50}
+                    onComplete={onCardComplete}
+                  />
+                )
               ) : (
                 <span className="opacity-0">{service.desc}</span>
               )}
             </p>
           </div>
 
-          <div className="pt-2">
+          <div className="pt-1.5 sm:pt-2 border-t border-palette-laceBorder/40 flex items-center justify-between">
             <button
               onClick={() => {
                 setActiveTab('catering');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="text-xs font-bold text-palette-eggplant flex items-center gap-1 hover:gap-2 transition-all group-hover:text-palette-shamrock"
+              className="text-[10px] sm:text-xs font-bold text-palette-eggplant flex items-center gap-1 hover:gap-2 transition-all group-hover:text-palette-shamrock"
             >
               <span>View Packages</span>
-              <ChevronRight className="w-4 h-4 text-palette-shamrock" />
+              <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-palette-shamrock" />
             </button>
           </div>
         </div>
+      </Card3DTilt>
+    </div>
+  );
+}
+
+// --- Helper 3D Floating Dish Icon Badge Container ---
+function ThreeDishIconWrapper({ children, gradient }) {
+  return (
+    <div className="relative group/icon" style={{ perspective: '600px' }}>
+      {/* 3D Floating Drop Shadow underneath badge */}
+      <div className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-8 h-2 bg-palette-eggplant/30 rounded-full blur-[4px] animate-pulse scale-x-90" />
+
+      {/* 3D Tilting & Floating Badge Container */}
+      <div
+        className={`w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-gradient-to-tr ${gradient} flex items-center justify-center text-white shadow-xl transition-all duration-500 transform group-hover/icon:scale-115 group-hover/icon:-translate-y-2 group-hover/icon:rotate-y-12 animate-float-slow relative`}
+        style={{
+          transformStyle: 'preserve-3d',
+          boxShadow: '0 12px 24px -6px rgba(0, 0, 0, 0.35), inset 0 2px 4px rgba(255, 255, 255, 0.4)'
+        }}
+      >
+        {/* 3D Glossy Light Flare Overlay */}
+        <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/35 via-transparent to-black/25 pointer-events-none" />
+
+        {/* 3D Spinning Ring Accent */}
+        <div className="absolute -inset-1 rounded-2xl border border-white/40 animate-spin-slow pointer-events-none opacity-50" style={{ transform: 'rotateX(55deg)' }} />
+
+        {/* 3D Elevating Dish SVG Icon */}
+        <div style={{ transform: 'translateZ(16px)' }}>
+          {children}
+        </div>
       </div>
-    </Card3DTilt>
+    </div>
+  );
+}
+
+// --- Dish-Specific Animated Icon Components ---
+function DosaTawaAnimatedIcon() {
+  return (
+    <div className="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
+      {/* Sizzling Steam Wisps */}
+      <svg className="absolute -top-2 w-5 h-4 text-emerald-200 animate-pulse" viewBox="0 0 40 30" fill="none">
+        <path d="M10,25 C5,15 15,10 10,0" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M25,28 C20,18 30,12 25,2" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      </svg>
+      {/* Tawa & Rolled Dosa SVG */}
+      <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <ellipse cx="12" cy="16" rx="9" ry="4" fill="currentColor" fillOpacity="0.2" stroke="currentColor" />
+        <path d="M3 16L1 18" strokeWidth="2.5" />
+        <path d="M6 14C6 12 18 12 18 14C18 16 6 16 6 14Z" fill="currentColor" fillOpacity="0.9" stroke="currentColor" />
+        <circle cx="10" cy="14" r="0.7" fill="#FEF08A" />
+        <circle cx="14" cy="14" r="0.7" fill="#FEF08A" />
+      </svg>
+      <Sparkles className="absolute -top-1 -right-1 w-3 h-3 text-yellow-300 animate-spin-slow" />
+    </div>
+  );
+}
+
+function AppamStewAnimatedIcon() {
+  return (
+    <div className="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
+      {/* Stew Steam */}
+      <svg className="absolute -top-2.5 w-5 h-4 text-purple-200 animate-bounce-subtle" viewBox="0 0 40 30" fill="none">
+        <path d="M12,25 C7,15 17,10 12,0" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M28,25 C23,15 33,10 28,0" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      </svg>
+      {/* Appam Chatty / Bowl SVG */}
+      <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 10C3 16 7 20 12 20C17 20 21 16 21 10H3Z" fill="currentColor" fillOpacity="0.25" stroke="currentColor" />
+        <circle cx="12" cy="13" r="3.5" fill="white" fillOpacity="0.95" />
+        <path d="M5 10C7 8 17 8 19 10" stroke="currentColor" strokeDasharray="1.5 1.5" />
+      </svg>
+    </div>
+  );
+}
+
+function FishGrillAnimatedIcon() {
+  return (
+    <div className="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
+      {/* Grill Embers */}
+      <div className="absolute -top-2 flex gap-1 animate-pulse">
+        <Flame className="w-3 h-3 text-amber-200 fill-amber-300 animate-bounce" />
+      </div>
+      {/* Fish / Kebab Skewer SVG */}
+      <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M6.5 12C4 9 3 6.5 3 6.5C3 6.5 5.5 7.5 8.5 10C11.5 7.5 14 6.5 14 6.5C14 6.5 13 9 10.5 12C13 15 14 17.5 14 17.5C14 17.5 11.5 16.5 8.5 14C5.5 16.5 3 17.5 3 17.5C3 17.5 4 15 6.5 12Z" fill="currentColor" fillOpacity="0.85" stroke="currentColor" />
+        <circle cx="5.5" cy="11.5" r="0.8" fill="white" />
+        <path d="M8 10L10 14M10 9.5L12 13.5" stroke="#78350F" strokeWidth="1.5" />
+        <line x1="2" y1="21" x2="22" y2="3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      </svg>
+    </div>
+  );
+}
+
+function FilterKaapiAnimatedIcon() {
+  return (
+    <div className="relative w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center">
+      {/* Rich Kaapi Aroma Steam */}
+      <svg className="absolute -top-2.5 w-5 h-4 text-purple-200 animate-steam-rise" viewBox="0 0 40 30" fill="none">
+        <path d="M15,25 C10,15 20,10 15,0" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+        <path d="M25,25 C20,15 30,10 25,0" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      </svg>
+      {/* Brass Davara Tumbler SVG */}
+      <svg className="w-6 h-6 sm:w-7 sm:h-7 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <ellipse cx="12" cy="18" rx="8" ry="3.5" fill="currentColor" fillOpacity="0.3" stroke="currentColor" />
+        <path d="M7 8L8.5 17C8.5 17.5 10 18 12 18C14 18 15.5 17.5 15.5 17L17 8H7Z" fill="currentColor" fillOpacity="0.8" stroke="currentColor" />
+        <ellipse cx="12" cy="8" rx="5" ry="1.8" fill="#FDE68A" />
+      </svg>
+    </div>
+  );
+}
+
+// --- Helper Bespoke Showcase Grid Component (Manages 1-by-1 Sequential Triggering) ---
+function BespokeShowcaseGrid({ services, setActiveTab }) {
+  const [activeCardIdx, setActiveCardIdx] = useState(-1);
+  const gridRef = React.useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && activeCardIdx === -1) {
+          setActiveCardIdx(0); // Trigger first card when section enters view
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (gridRef.current) {
+      observer.observe(gridRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [activeCardIdx]);
+
+  const handleCardComplete = (completedIdx) => {
+    if (completedIdx === activeCardIdx) {
+      setActiveCardIdx((prev) => prev + 1);
+    }
+  };
+
+  return (
+    <div ref={gridRef} className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+      {services.map((service, idx) => (
+        <AnimatedBespokeCard
+          key={idx}
+          service={service}
+          idx={idx}
+          activeCardIdx={activeCardIdx}
+          onCardComplete={() => handleCardComplete(idx)}
+          setActiveTab={setActiveTab}
+        />
+      ))}
+    </div>
   );
 }
 
@@ -288,8 +478,8 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
             </p>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-            {[
+          <BespokeShowcaseGrid
+            services={[
               {
                 title: "Royal South Weddings",
                 badge: "Signature",
@@ -318,10 +508,9 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
                 desc: "Mobile luxury kitchens, live open-flame tawa grills & beachside BBQ buffets anywhere across India.",
                 image: "https://images.unsplash.com/photo-1532635241-17e820acc59f?auto=format&fit=crop&q=80&w=600",
               }
-            ].map((service, idx) => (
-              <AnimatedBespokeCard key={idx} service={service} idx={idx} setActiveTab={setActiveTab} />
-            ))}
-          </div>
+            ]}
+            setActiveTab={setActiveTab}
+          />
         </div>
       </section>
 
@@ -368,14 +557,20 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
                 'from-amber-400 to-amber-500',
                 'from-palette-eggplant to-purple-700'
               ];
+              const dishAnimatedIcons = [
+                <DosaTawaAnimatedIcon key="dosa" />,
+                <AppamStewAnimatedIcon key="appam" />,
+                <FishGrillAnimatedIcon key="fish" />,
+                <FilterKaapiAnimatedIcon key="kaapi" />
+              ];
               return (
                 <div
                   key={station.id}
                   className="bg-white text-palette-eggplant p-4 sm:p-6 rounded-2xl border-2 border-palette-shamrock/40 shadow-lilac-lg hover:border-palette-shamrock hover:-translate-y-2 hover:rotate-1 hover:shadow-2xl transition-all duration-300 space-y-2.5 group cursor-pointer"
                 >
-                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-tr ${iconGradients[idx % 4]} flex items-center justify-center text-white shadow-md group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300`}>
-                    <Flame className="w-5 h-5 sm:w-6 sm:h-6 fill-white animate-bounce-subtle" />
-                  </div>
+                  <ThreeDishIconWrapper gradient={iconGradients[idx % 4]}>
+                    {dishAnimatedIcons[idx % 4]}
+                  </ThreeDishIconWrapper>
                   <h3 className="font-serif text-sm sm:text-lg font-bold text-palette-eggplant group-hover:text-palette-shamrock transition-colors leading-snug">{station.name}</h3>
                   <p className="text-palette-eggplant/90 text-xs leading-relaxed font-normal">{station.description}</p>
                 </div>
@@ -439,7 +634,14 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
           {/* Dish Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredMenuItems.map((dish) => (
-              <Card3DTilt key={dish.id} className="bg-white border border-palette-laceBorder group cursor-pointer shadow-lilac-md hover:shadow-xl rounded-2xl flex flex-col justify-between overflow-hidden">
+              <Card3DTilt
+                key={dish.id}
+                onClick={() => {
+                  setActiveTab('menu');
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}
+                className="bg-white border border-palette-laceBorder group cursor-pointer shadow-lilac-md hover:shadow-xl rounded-2xl flex flex-col justify-between overflow-hidden"
+              >
                 <div>
                   <div className="relative h-40 sm:h-52 overflow-hidden rounded-t-2xl">
                     <img

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, MessageCircle, CheckCircle, ChevronDown, ChevronUp, Clock, Sparkles, Navigation, ShieldCheck } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { motion } from 'framer-motion';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -39,33 +40,63 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="pt-28 pb-16 space-y-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-palette-lace text-palette-eggplant relative overflow-hidden animate-fadeIn">
+    <div className="pt-20 lg:pt-24 pb-16 space-y-10 sm:space-y-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-palette-lace text-palette-eggplant relative overflow-hidden animate-fadeIn">
       
       {/* Ambient Lighting Background Accents */}
       <div className="absolute top-10 right-10 w-96 h-96 bg-palette-lilac/30 rounded-full blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute bottom-10 left-10 w-96 h-96 bg-palette-shamrock/20 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Header Banner with Background Image & Eggplant Opacity Overlay */}
-      <section className="relative text-center max-w-5xl mx-auto px-6 py-16 rounded-3xl overflow-hidden shadow-2xl border-2 border-palette-lilac/40 text-white animate-scaleUp">
-        <div 
-          className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-1000"
+      {/* Header Banner with Background Image & Medium Opacity Overlay */}
+      <motion.section 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="relative text-center max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-16 rounded-3xl overflow-hidden shadow-2xl border-2 border-palette-lilac/40 text-white group"
+      >
+        {/* Background Image Slow Horizontal Zoom */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.08, 1],
+            x: [0, -15, 0]
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('/images/dishes/kaapi_lounge.jpg')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-palette-eggplant/95 via-palette-eggplantDark/90 to-palette-eggplant/95 backdrop-blur-xs" />
+        
+        {/* Medium Opacity Eggplant Overlay */}
+        <div className="absolute inset-0 bg-palette-eggplant/75 backdrop-blur-[2px] transition-opacity duration-500 group-hover:bg-palette-eggplant/70" />
 
-        <div className="relative z-10 space-y-4">
-          <div className="inline-flex items-center gap-2 bg-white/10 text-white px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider mb-2 shadow-inner border border-palette-shamrock/40">
-            <Phone className="w-4 h-4 text-palette-shamrock animate-bounce" />
+        <div className="relative z-10 space-y-3.5 max-w-3xl mx-auto">
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-white px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider shadow-lg border border-white/30"
+          >
+            <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-palette-shamrock animate-bounce" />
             <span>24/7 Culinary Concierge Hotline</span>
-          </div>
-          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
-            Contact <span className="bg-gradient-to-r from-white via-palette-shamrock to-white bg-clip-text text-transparent">The Royal Table Concierge</span>
-          </h1>
-          <p className="text-palette-lilac/90 text-xs sm:text-base max-w-2xl mx-auto font-medium">
+          </motion.div>
+
+          <motion.h1 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight drop-shadow-md"
+          >
+            Contact <span className="bg-gradient-to-r from-palette-shamrock via-white to-palette-shamrock bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent">The Royal Table Concierge</span>
+          </motion.h1>
+
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="text-white/95 text-xs sm:text-base max-w-2xl mx-auto font-medium leading-relaxed drop-shadow-sm"
+          >
             Have a question about South Indian catering packages, custom menu tasting, or event dates? Our royal event coordinators are ready to assist you.
-          </p>
+          </motion.p>
         </div>
-      </section>
+      </motion.section>
 
       {/* Main Grid: Inquiry Form & Communication Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 relative z-10">
@@ -185,7 +216,7 @@ export default function ContactPage() {
         <div className="lg:col-span-5 space-y-6">
           
           {/* Direct Communication Info Card */}
-          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-5 transition-all hover:shadow-2xl">
+          <div className="bg-white p-4 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-5 transition-all hover:shadow-2xl">
             <div className="flex items-center justify-between border-b border-palette-laceBorder pb-3">
               <h3 className="font-serif text-xl font-extrabold text-palette-eggplant">Direct Communication</h3>
               <span className="text-[10px] uppercase font-black text-palette-shamrock bg-palette-shamrock/15 px-2.5 py-0.5 rounded-full border border-palette-shamrock/30">
@@ -194,26 +225,26 @@ export default function ContactPage() {
             </div>
             
             <div className="space-y-3.5 text-sm text-palette-eggplant">
-              <div className="flex items-center gap-3.5 p-3.5 bg-gradient-to-r from-palette-lace to-palette-lilacLight/40 rounded-2xl border border-palette-laceBorder hover:border-palette-shamrock/40 transition-colors">
+              <div className="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-3.5 bg-gradient-to-r from-palette-lace to-palette-lilacLight/40 rounded-2xl border border-palette-laceBorder hover:border-palette-shamrock/40 transition-colors">
                 <div className="w-10 h-10 rounded-xl bg-palette-eggplant text-white flex items-center justify-center shrink-0 shadow-md">
                   <Phone className="w-5 h-5 text-palette-shamrock" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <p className="text-[10px] text-palette-eggplant/60 uppercase font-extrabold">24/7 Helpline & WhatsApp</p>
-                  <a href="tel:+919840012345" className="font-extrabold text-palette-eggplant hover:text-palette-shamrock transition-colors block text-sm">
+                  <a href="tel:+919840012345" className="font-extrabold text-palette-eggplant hover:text-palette-shamrock transition-colors block text-xs sm:text-sm">
                     +91 98400 12345 / +91 94440 54321
                   </a>
                   <p className="text-[10px] text-palette-shamrock font-bold mt-0.5">Toll-Free Helpline: 1800-425-7890</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3.5 p-3.5 bg-gradient-to-r from-palette-lace to-palette-lilacLight/40 rounded-2xl border border-palette-laceBorder hover:border-palette-shamrock/40 transition-colors">
+              <div className="flex items-center gap-3 sm:gap-3.5 p-3 sm:p-3.5 bg-gradient-to-r from-palette-lace to-palette-lilacLight/40 rounded-2xl border border-palette-laceBorder hover:border-palette-shamrock/40 transition-colors">
                 <div className="w-10 h-10 rounded-xl bg-palette-eggplant text-white flex items-center justify-center shrink-0 shadow-md">
                   <Mail className="w-5 h-5 text-palette-shamrock" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <p className="text-[10px] text-palette-eggplant/60 uppercase font-extrabold">Official Email</p>
-                  <a href="mailto:bookings@royaltablecatering.com" className="font-extrabold text-palette-eggplant hover:text-palette-shamrock transition-colors text-sm">
+                  <a href="mailto:bookings@royaltablecatering.com" className="font-extrabold text-palette-eggplant hover:text-palette-shamrock transition-colors block text-[11px] sm:text-sm break-all">
                     bookings@royaltablecatering.com
                   </a>
                 </div>

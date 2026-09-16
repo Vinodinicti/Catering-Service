@@ -8,37 +8,57 @@ export default function CateringPage({ onOpenEstimate, onOpenBooking }) {
   return (
     <div className="pt-28 pb-16 space-y-20 bg-palette-lace text-palette-eggplant overflow-x-hidden">
       
-      {/* Header Banner with Background Image & Eggplant Opacity Overlay */}
-      <section className="relative text-center max-w-5xl mx-auto px-4 sm:px-6 py-10 sm:py-14 rounded-3xl overflow-hidden shadow-2xl border border-palette-lilac/30 text-white">
-        <div 
-          className="absolute inset-0 bg-cover bg-center scale-105"
+      {/* Header Banner with Background Image & Medium Opacity Overlay */}
+      <motion.section 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: "easeOut" }}
+        className="relative text-center max-w-5xl mx-auto px-4 sm:px-6 py-12 sm:py-16 rounded-3xl overflow-hidden shadow-2xl border border-palette-lilac/40 text-white group"
+      >
+        {/* Slow Diagonal Zoom Image */}
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.07, 1],
+            x: [0, 15, 0]
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute inset-0 bg-cover bg-center"
           style={{ backgroundImage: `url('/images/dishes/dosa_bar.jpg')` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-palette-eggplant/95 via-palette-eggplantDark/90 to-palette-eggplant/95 backdrop-blur-xs" />
+        
+        {/* Medium Opacity Eggplant Overlay */}
+        <div className="absolute inset-0 bg-palette-eggplant/75 backdrop-blur-[2px] transition-opacity duration-500 group-hover:bg-palette-eggplant/70" />
 
-        <div className="relative z-10">
+        <div className="relative z-10 space-y-3.5 max-w-3xl mx-auto">
           <motion.div 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 bg-white/10 text-white px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider mb-2.5 sm:mb-3 shadow-inner border border-palette-shamrock/40"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-white px-4 py-1.5 rounded-full text-[11px] sm:text-xs font-bold uppercase tracking-wider shadow-lg border border-white/30"
           >
             <UtensilsCrossed className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-palette-shamrock animate-pulse" />
             <span>Curated South Indian Tiers</span>
           </motion.div>
+
           <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="font-serif text-3xl sm:text-5xl font-extrabold text-white leading-tight"
+            transition={{ duration: 0.6, delay: 0.25 }}
+            className="font-serif text-3xl sm:text-5xl font-extrabold text-white leading-tight drop-shadow-md"
           >
-            Imperial <span className="bg-gradient-to-r from-white via-palette-shamrock to-white bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent">Catering Packages & Services</span>
+            Imperial <span className="bg-gradient-to-r from-palette-shamrock via-white to-palette-shamrock bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent">Catering Packages & Services</span>
           </motion.h1>
-          <p className="text-palette-lilac/90 text-sm sm:text-lg mt-2.5 sm:mt-3 max-w-2xl mx-auto leading-relaxed">
+
+          <motion.p 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.35 }}
+            className="text-white/95 text-xs sm:text-base max-w-2xl mx-auto leading-relaxed font-medium drop-shadow-sm"
+          >
             Select from our handcrafted South Indian catering packages or request a 100% custom menu designed specifically for your event requirements.
-          </p>
+          </motion.p>
         </div>
-      </section>
+      </motion.section>
 
       {/* Catering Packages Grid with 3D Depth & Staggered Animations */}
       <section className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 perspective-1000">
@@ -53,7 +73,8 @@ export default function CateringPage({ onOpenEstimate, onOpenBooking }) {
               className="h-full"
             >
               <Card3DTilt
-                className={`bg-white border flex flex-col justify-between relative shadow-lilac-md hover:shadow-2xl rounded-3xl h-full transition-all duration-500 transform-style-3d group ${
+                onClick={() => onOpenEstimate(pkg)}
+                className={`bg-white border flex flex-col justify-between relative shadow-lilac-md hover:shadow-2xl rounded-3xl h-full transition-all duration-500 transform-style-3d group cursor-pointer ${
                   pkg.popular ? 'border-palette-shamrock ring-4 ring-palette-shamrock/20' : 'border-palette-laceBorder'
                 }`}
               >
