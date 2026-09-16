@@ -4,7 +4,7 @@ import Card3DTilt from '../components/3d/Card3DTilt';
 import InstantEstimator from '../components/estimator/InstantEstimator';
 import { MENU_ITEMS, MENU_CATEGORIES } from '../data/menuData';
 import { LIVE_STATIONS } from '../data/packageData';
-import { Sparkles, Utensils, Star, ArrowRight, Flame, ChevronRight } from 'lucide-react';
+import { Sparkles, Utensils, Star, ArrowRight, Flame, ChevronRight, UtensilsCrossed } from 'lucide-react';
 
 export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }) {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -16,11 +16,36 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
   return (
     <div className="space-y-0 text-palette-eggplant">
       
-      {/* --- 1. HERO SECTION (CLEAN WHITE BACKGROUND) --- */}
+      {/* --- 1. HERO SECTION (TWINKLING LILAC FOOD STARS & FLOATING SPARKLES) --- */}
       <section className="relative min-h-[85vh] pt-20 lg:pt-24 pb-16 flex items-center overflow-hidden bg-white text-palette-eggplant">
-        {/* Ambient Glows */}
-        <div className="absolute top-1/4 left-10 w-80 h-80 bg-palette-lilac/25 rounded-full blur-[130px] pointer-events-none" />
+        
+        {/* Soft Ambient Lilac Glows */}
+        <div className="absolute top-1/4 left-10 w-96 h-96 bg-palette-lilac/30 rounded-full blur-[130px] pointer-events-none animate-pulse" />
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-palette-shamrock/15 rounded-full blur-[150px] pointer-events-none" />
+
+        {/* Floating Twinkling Lilac Food Stars & Culinary Sparkles */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+          {/* Twinkling Star 1 */}
+          <div className="absolute top-16 left-[12%] text-palette-lilac animate-food-twinkle">
+            <Star className="w-5 h-5 fill-palette-lilac/40 text-palette-lilac" />
+          </div>
+          {/* Twinkling Star 2 */}
+          <div className="absolute top-36 right-[15%] text-palette-shamrock animate-food-twinkle" style={{ animationDelay: '1.2s' }}>
+            <Sparkles className="w-6 h-6 text-palette-shamrock" />
+          </div>
+          {/* Floating Food Icon 1 */}
+          <div className="absolute bottom-24 left-[8%] text-palette-lilac/60 animate-float-slow" style={{ animationDelay: '0.8s' }}>
+            <UtensilsCrossed className="w-8 h-8 opacity-40" />
+          </div>
+          {/* Twinkling Star 3 */}
+          <div className="absolute top-[48%] left-[45%] text-palette-lilac animate-food-twinkle" style={{ animationDelay: '2.4s' }}>
+            <Star className="w-4 h-4 fill-palette-lilac/30 text-palette-lilac" />
+          </div>
+          {/* Twinkling Star 4 */}
+          <div className="absolute bottom-16 right-[22%] text-palette-shamrock/60 animate-food-twinkle" style={{ animationDelay: '3.1s' }}>
+            <Sparkles className="w-5 h-5" />
+          </div>
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
@@ -105,9 +130,28 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
       </section>
 
 
-      {/* --- 2. CATERING SERVICES SHOWCASE (THEME: SOFT LACE #F7F5FA) --- */}
-      <section className="bg-palette-lace py-20 border-y border-palette-laceBorder">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* --- 2. CATERING SERVICES SHOWCASE (THEME: ANIMATED LILAC FOOD STEAM WISPS) --- */}
+      <section className="bg-palette-lace py-20 border-y border-palette-laceBorder relative overflow-hidden">
+        
+        {/* Animated Rising Food Steam / Smoke Wisps (Lilac Tinted) */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+          {/* Steam Wisp 1 */}
+          <svg className="absolute bottom-4 left-[10%] w-24 h-40 text-palette-lilac/40 animate-steam-rise" viewBox="0 0 100 200" fill="none">
+            <path d="M50,200 Q20,150 60,100 T50,0" stroke="currentColor" strokeWidth="4" strokeLinecap="round" fill="none" />
+          </svg>
+          {/* Steam Wisp 2 */}
+          <svg className="absolute bottom-8 left-[35%] w-20 h-36 text-palette-lilac/30 animate-steam-rise" style={{ animationDelay: '1.8s' }} viewBox="0 0 100 200" fill="none">
+            <path d="M40,200 Q70,140 30,80 T60,0" stroke="currentColor" strokeWidth="5" strokeLinecap="round" fill="none" />
+          </svg>
+          {/* Steam Wisp 3 */}
+          <svg className="absolute bottom-2 right-[25%] w-28 h-44 text-palette-lilac/35 animate-steam-rise" style={{ animationDelay: '3.5s' }} viewBox="0 0 100 200" fill="none">
+            <path d="M50,200 Q30,130 70,70 T40,0" stroke="currentColor" strokeWidth="4" strokeLinecap="round" fill="none" />
+          </svg>
+          {/* Floating Lilac Gradient Aura Ring */}
+          <div className="absolute top-1/2 -right-20 w-80 h-80 rounded-full border border-palette-lilac/40 animate-spin-slow pointer-events-none" />
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-14">
             <span className="text-xs font-extrabold uppercase tracking-widest text-palette-eggplant bg-palette-lilac/40 px-3.5 py-1 rounded-full border border-palette-lilac/50">
               Bespoke Hospitality
@@ -192,11 +236,25 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
       </section>
 
 
-      {/* --- 3. LIVE COOKING STATIONS SECTION (THEME: DARK PURPLE SECTION WITH CRISP ANIMATED WHITE CARDS) --- */}
+      {/* --- 3. LIVE COOKING STATIONS SECTION (THEME: LIVE COUNTER SPARKLES & LILAC EMBER PARTICLES) --- */}
       <section className="bg-palette-eggplantDark py-20 text-white relative overflow-hidden">
-        {/* Background glow */}
+        
+        {/* Deep Glows & Floating Lilac Embers */}
         <div className="absolute top-1/2 right-0 w-96 h-96 bg-palette-shamrock/20 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-80 h-80 bg-palette-lilac/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-palette-lilac/30 rounded-full blur-[130px] pointer-events-none animate-pulse" />
+
+        {/* Floating Lilac & Gold Ember Sparks */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute top-12 left-[15%] text-palette-lilac animate-food-twinkle">
+            <Flame className="w-5 h-5 text-palette-lilac/50" />
+          </div>
+          <div className="absolute top-1/3 right-[10%] text-palette-shamrock animate-float-drift">
+            <Sparkles className="w-6 h-6 text-palette-shamrock/70" />
+          </div>
+          <div className="absolute bottom-16 left-[40%] text-palette-lilac animate-float-slow" style={{ animationDelay: '1.5s' }}>
+            <Star className="w-4 h-4 text-palette-lilac/60 fill-palette-lilac/40" />
+          </div>
+        </div>
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-14">
@@ -238,12 +296,23 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
       </section>
 
 
-      {/* --- 4. FEATURED FOOD MENU SHOWCASE (THEME: SOFT LILAC TINT #ECE8FF) --- */}
-      <section className="bg-palette-lilacLight py-20 border-b border-palette-laceBorder">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* --- 4. FEATURED FOOD MENU SHOWCASE (THEME: FLOATING LILAC CULINARY CONSTELLATIONS) --- */}
+      <section className="bg-gradient-to-br from-palette-lilacLight via-white to-palette-lilacLight/60 py-20 border-b border-palette-laceBorder relative overflow-hidden">
+        
+        {/* Floating Lilac Culinary Icons & Star Clusters */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute top-10 left-8 text-palette-lilac/50 animate-float-slow">
+            <UtensilsCrossed className="w-12 h-12 opacity-30" />
+          </div>
+          <div className="absolute bottom-12 right-12 text-palette-lilac/60 animate-food-twinkle" style={{ animationDelay: '2s' }}>
+            <Sparkles className="w-10 h-10 text-palette-lilac" />
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-4">
             <div>
-              <span className="text-xs font-extrabold uppercase tracking-widest text-palette-eggplant bg-palette-lilac/50 px-3 py-1 rounded-full">
+              <span className="text-xs font-extrabold uppercase tracking-widest text-palette-eggplant bg-palette-lilac/50 px-3 py-1 rounded-full border border-palette-lilac/60 shadow-sm">
                 Culinary Creations
               </span>
               <h2 className="font-serif text-3xl font-extrabold text-palette-eggplant mt-2">Chef's Signature South Indian Highlights</h2>
@@ -331,9 +400,12 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
       </section>
 
 
-      {/* --- 5. EMBEDDED INSTANT ESTIMATOR WIDGET --- */}
-      <section className="bg-palette-lace py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* --- 5. EMBEDDED INSTANT ESTIMATOR WIDGET (THEME: SOFT LILAC ORB AURA) --- */}
+      <section className="bg-palette-lace py-20 relative overflow-hidden">
+        {/* Soft Animated Lilac Background Glow Field */}
+        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-palette-lilac/30 rounded-full blur-[140px] pointer-events-none animate-pulse" />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <InstantEstimator onBookWithEstimate={onOpenBooking} />
         </div>
       </section>
