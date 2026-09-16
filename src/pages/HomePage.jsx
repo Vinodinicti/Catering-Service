@@ -92,17 +92,23 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
 
               {/* Trust Badges */}
               <div className="pt-6 grid grid-cols-3 gap-4 border-t border-palette-laceBorder max-w-lg mx-auto lg:mx-0">
-                <div>
-                  <h4 className="font-sans text-2xl sm:text-3xl font-extrabold text-palette-shamrock tracking-tight">500+</h4>
-                  <p className="text-xs text-palette-eggplant/75 font-semibold">Royal Events Served</p>
+                <div className="transform hover:scale-105 transition-transform">
+                  <h4 className="font-sans text-2xl sm:text-4xl font-black text-palette-shamrock tracking-tight drop-shadow-sm">
+                    <AnimatedCounter target={500} suffix="+" duration={2000} />
+                  </h4>
+                  <p className="text-xs text-palette-eggplant/80 font-bold mt-1">Royal Events Served</p>
                 </div>
-                <div>
-                  <h4 className="font-sans text-2xl sm:text-3xl font-extrabold text-palette-eggplant tracking-tight">40+</h4>
-                  <p className="text-xs text-palette-eggplant/75 font-semibold">Master Culinary Chefs</p>
+                <div className="transform hover:scale-105 transition-transform">
+                  <h4 className="font-sans text-2xl sm:text-4xl font-black text-palette-eggplant tracking-tight drop-shadow-sm">
+                    <AnimatedCounter target={40} suffix="+" duration={1800} />
+                  </h4>
+                  <p className="text-xs text-palette-eggplant/80 font-bold mt-1">Master Culinary Chefs</p>
                 </div>
-                <div>
-                  <h4 className="font-sans text-2xl sm:text-3xl font-extrabold text-palette-shamrock tracking-tight">99.8%</h4>
-                  <p className="text-xs text-palette-eggplant/75 font-semibold">Guest Satisfaction</p>
+                <div className="transform hover:scale-105 transition-transform">
+                  <h4 className="font-sans text-2xl sm:text-4xl font-black text-palette-shamrock tracking-tight drop-shadow-sm">
+                    <AnimatedCounter target={99.8} suffix="%" decimals={1} duration={2200} />
+                  </h4>
+                  <p className="text-xs text-palette-eggplant/80 font-bold mt-1">Guest Satisfaction</p>
                 </div>
               </div>
 
