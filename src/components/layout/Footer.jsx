@@ -1,7 +1,9 @@
-import React from 'react';
-import { Crown, Phone, Mail, MapPin, Clock, Heart, Award, ShieldCheck, Lock, ArrowUpRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Crown, Phone, Mail, MapPin, Clock, Heart, Award, ShieldCheck, Lock, ArrowUpRight, FileText, MessageCircle, X, Shield } from 'lucide-react';
 
 export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
+  const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
+
   return (
     <footer className="bg-palette-eggplant text-white py-8 md:pt-14 md:pb-8 border-t border-palette-shamrock/30 relative overflow-hidden">
       {/* Soft Ambient Glows */}
@@ -38,7 +40,7 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
             </div>
           </div>
 
-          {/* Col 2: Quick Links */}
+          {/* Col 2: Quick Links & Privacy */}
           <div>
             <h4 className="font-serif text-base font-extrabold text-palette-shamrock mb-3.5">
               Explore Services
@@ -49,7 +51,7 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
                 { name: 'About Us', tab: 'about' },
                 { name: 'Catering Packages', tab: 'catering' },
                 { name: 'Food Menu', tab: 'menu' },
-                { name: 'Contact Us', tab: 'contact' },
+                { name: 'Contact Us 📞', tab: 'contact' },
               ].map((item) => (
                 <li key={item.name}>
                   <button
@@ -57,17 +59,29 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
                       setActiveTab(item.tab);
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="text-white hover:text-palette-shamrock font-medium transition-colors flex items-center gap-2"
+                    className="text-white hover:text-palette-shamrock font-medium transition-colors flex items-center gap-2 cursor-pointer"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-palette-shamrock" />
                     <span>{item.name}</span>
                   </button>
                 </li>
               ))}
+
+              {/* Privacy Policy Link */}
+              <li className="pt-1">
+                <button
+                  onClick={() => setIsPrivacyOpen(true)}
+                  className="text-palette-lilac hover:text-white font-semibold transition-colors inline-flex items-center gap-1.5 cursor-pointer"
+                >
+                  <FileText className="w-3.5 h-3.5 text-palette-shamrock" />
+                  <span>Privacy Policy & Terms</span>
+                </button>
+              </li>
+
               <li className="pt-1">
                 <button
                   onClick={onOpenEstimate}
-                  className="text-palette-shamrock hover:underline font-bold inline-flex items-center gap-1.5"
+                  className="text-palette-shamrock hover:underline font-bold inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-palette-shamrock animate-ping" />
                   <span>Instant Catering Estimator</span>
@@ -106,7 +120,7 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
             </ul>
           </div>
 
-          {/* Col 4: Contact & Hours */}
+          {/* Col 4: Contact & Hours with WA Button */}
           <div>
             <h4 className="font-serif text-base font-extrabold text-palette-shamrock mb-3.5">
               Get In Touch
@@ -136,6 +150,19 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
                 <span className="text-xs text-white/90 font-medium">Open Daily: 9:00 AM - 10:00 PM (IST)</span>
               </li>
             </ul>
+
+            {/* Direct WhatsApp Action Button */}
+            <div className="pt-3">
+              <a
+                href="https://wa.me/919840012345?text=Hello%20Royal%20Table%20Catering!%20I%20would%20like%20to%20inquire%20about%20catering%20services."
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-palette-shamrock hover:bg-palette-shamrockDark text-white text-xs font-black transition-all shadow-md hover:scale-105"
+              >
+                <MessageCircle className="w-4 h-4 fill-white" />
+                <span>WhatsApp Direct Chat 💬</span>
+              </a>
+            </div>
           </div>
 
         </div>
@@ -143,14 +170,28 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
 
         {/* === 2. MOBILE VIEW: SHORT COMPACT LAYOUT (block md:hidden) === */}
         <div className="block md:hidden space-y-4 pb-6 border-b border-white/10">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-palette-shamrock flex items-center justify-center shadow-md">
-              <Crown className="w-4 h-4 text-white fill-white" />
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-xl bg-palette-shamrock flex items-center justify-center shadow-md">
+                <Crown className="w-4 h-4 text-white fill-white" />
+              </div>
+              <span className="font-serif text-xl font-extrabold text-white tracking-tight">
+                THE ROYAL TABLE
+              </span>
             </div>
-            <span className="font-serif text-xl font-extrabold text-white tracking-tight">
-              THE ROYAL TABLE
-            </span>
+            
+            {/* Quick WhatsApp Badge for Mobile */}
+            <a
+              href="https://wa.me/919840012345?text=Hello%20Royal%20Table%20Catering!"
+              target="_blank"
+              rel="noreferrer"
+              className="p-2 rounded-xl bg-palette-shamrock text-white shadow-md hover:scale-110 transition-transform"
+              aria-label="Contact WhatsApp"
+            >
+              <MessageCircle className="w-4 h-4 fill-white" />
+            </a>
           </div>
+
           <p className="text-palette-lilac/90 text-xs leading-relaxed">
             Crafting unforgettable South Indian culinary experiences for royal weddings, corporate galas & celebrations.
           </p>
@@ -161,7 +202,7 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
               { name: 'About Us', tab: 'about' },
               { name: 'Catering Packages', tab: 'catering' },
               { name: 'Food Menu', tab: 'menu' },
-              { name: 'Contact', tab: 'contact' },
+              { name: 'Contact Us 📞', tab: 'contact' },
             ].map((item) => (
               <button
                 key={item.name}
@@ -174,6 +215,16 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
                 {item.name}
               </button>
             ))}
+            
+            {/* Mobile Privacy Link */}
+            <button
+              onClick={() => setIsPrivacyOpen(true)}
+              className="text-palette-lilac hover:text-white font-bold inline-flex items-center gap-1"
+            >
+              <FileText className="w-3 h-3 text-palette-shamrock" />
+              <span>Privacy</span>
+            </button>
+
             <button
               onClick={onOpenEstimate}
               className="text-palette-shamrock hover:underline font-bold inline-flex items-center gap-1"
@@ -183,7 +234,7 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
             </button>
           </div>
 
-          <div className="space-y-1.5 text-xs text-white/90 font-medium pt-1">
+          <div className="space-y-1.5 text-xs text-white/90 font-medium pt-1 flex flex-col sm:flex-row items-start sm:items-center gap-2 justify-between">
             <div className="flex items-center gap-2">
               <Phone className="w-3.5 h-3.5 text-palette-shamrock shrink-0" />
               <a href="tel:+919840012345" className="hover:text-palette-shamrock transition-colors">+91 98400 12345</a>
@@ -198,7 +249,15 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
 
         {/* === 3. BOTTOM BAR WITH UN-OBSCURED ADMIN PORTAL BUTTON === */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/80 pr-16 md:pr-0">
-          <p>© {new Date().getFullYear()} The Royal Table Catering Services. All rights reserved.</p>
+          <div className="flex flex-wrap items-center gap-3">
+            <p>© {new Date().getFullYear()} The Royal Table Catering Services.</p>
+            <button
+              onClick={() => setIsPrivacyOpen(true)}
+              className="text-palette-lilac hover:text-white underline font-semibold text-[11px] cursor-pointer"
+            >
+              Privacy Policy & Terms
+            </button>
+          </div>
           
           <div className="flex items-center gap-4">
             {/* Prominent Admin Portal Icon Button */}
@@ -220,6 +279,90 @@ export default function Footer({ setActiveTab, onOpenEstimate, onOpenAdmin }) {
         </div>
 
       </div>
+
+      {/* --- PRIVACY POLICY POPUP MODAL --- */}
+      {isPrivacyOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
+          <div
+            onClick={() => setIsPrivacyOpen(false)}
+            className="fixed inset-0 bg-palette-eggplant/80 backdrop-blur-md transition-opacity animate-fadeIn"
+          />
+          <div className="relative w-full max-w-2xl bg-white text-palette-eggplant rounded-3xl border border-palette-laceBorder shadow-2xl overflow-hidden z-10 animate-scaleUp my-auto flex flex-col max-h-[85vh]">
+            
+            {/* Modal Header */}
+            <div className="bg-palette-eggplant p-5 border-b border-white/15 flex items-center justify-between text-white shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-palette-shamrock flex items-center justify-center shadow-md">
+                  <Shield className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h3 className="font-serif text-xl font-extrabold text-white leading-tight">
+                    Privacy Policy & Data Security
+                  </h3>
+                  <p className="text-xs text-palette-lilac font-medium">The Royal Table Gourmet Services</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsPrivacyOpen(false)}
+                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-6 overflow-y-auto space-y-4 text-xs sm:text-sm text-palette-eggplant/85 leading-relaxed bg-palette-lace/30">
+              
+              <div className="bg-palette-shamrock/15 p-3.5 rounded-2xl border border-palette-shamrock/40 flex items-center gap-3">
+                <ShieldCheck className="w-6 h-6 text-palette-shamrock shrink-0" />
+                <div>
+                  <h4 className="font-bold text-palette-eggplant text-xs uppercase">100% Confidential & Secure Guarantee</h4>
+                  <p className="text-[11px] text-palette-eggplant/75">Your privacy and event security are held to the highest royal hospitality standards.</p>
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <h4 className="font-serif font-extrabold text-palette-eggplant text-sm">1. Information We Collect</h4>
+                <p>When you request an estimate or submit a booking form, we collect essential event details including your full name, contact number, email address, event date, guest count, and catering preferences.</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <h4 className="font-serif font-extrabold text-palette-eggplant text-sm">2. How We Use Your Data</h4>
+                <p>Your details are strictly used to prepare authentic South Indian catering quotations, coordinate logistics with our master chef team, and provide concierge support for your event.</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <h4 className="font-serif font-extrabold text-palette-eggplant text-sm">3. Zero Third-Party Sharing</h4>
+                <p>We do NOT sell, rent, or trade your personal information to marketing agencies or third-party vendors. Your contact details remain confidential within our culinary concierge database.</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <h4 className="font-serif font-extrabold text-palette-eggplant text-sm">4. WhatsApp Communication</h4>
+                <p>WhatsApp updates are sent only upon your explicit request when choosing to share confirmation details or initiate direct chat with our concierge helpline.</p>
+              </div>
+
+              <div className="space-y-1.5">
+                <h4 className="font-serif font-extrabold text-palette-eggplant text-sm">5. Data Inquiries & Deletion</h4>
+                <p>If you wish to update or permanently delete your contact records from our system, please email our privacy team at <a href="mailto:privacy@royaltablecatering.com" className="text-palette-shamrock font-bold underline">privacy@royaltablecatering.com</a>.</p>
+              </div>
+
+            </div>
+
+            {/* Modal Footer */}
+            <div className="p-4 bg-white border-t border-palette-laceBorder flex justify-end shrink-0">
+              <button
+                onClick={() => setIsPrivacyOpen(false)}
+                className="px-6 py-2.5 rounded-xl bg-palette-eggplant hover:bg-palette-eggplantDark text-white font-extrabold text-xs shadow-md transition-all cursor-pointer"
+              >
+                I Understand & Accept
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
     </footer>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageCircle, CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, MessageCircle, CheckCircle, ChevronDown, ChevronUp, Clock, Sparkles, Navigation, ShieldCheck } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function ContactPage() {
@@ -15,7 +15,7 @@ export default function ContactPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    confetti({ particleCount: 50, spread: 60, origin: { y: 0.7 } });
+    confetti({ particleCount: 60, spread: 70, origin: { y: 0.6 } });
     setSubmitted(true);
   };
 
@@ -30,7 +30,7 @@ export default function ContactPage() {
     },
     {
       q: "Do you offer complimentary food tasting sessions?",
-      a: "Yes! Once an initial booking estimate is created, we invite clients to our studio kitchen for a complimentary tasting session with our executive chef."
+      a: "Yes! Once an initial booking estimate is created, we invite clients to our studio kitchen for a complimentary tasting session with our executive master chef."
     },
     {
       q: "Can you accommodate strict Jain, Vegan, or Sattvic dietary needs?",
@@ -39,46 +39,61 @@ export default function ContactPage() {
   ];
 
   return (
-    <div className="pt-28 pb-16 space-y-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-palette-lace text-palette-eggplant">
+    <div className="pt-28 pb-16 space-y-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-palette-lace text-palette-eggplant relative overflow-hidden animate-fadeIn">
       
+      {/* Ambient Lighting Background Accents */}
+      <div className="absolute top-10 right-10 w-96 h-96 bg-palette-lilac/30 rounded-full blur-3xl pointer-events-none animate-pulse" />
+      <div className="absolute bottom-10 left-10 w-96 h-96 bg-palette-shamrock/20 rounded-full blur-3xl pointer-events-none" />
+
       {/* Header Banner with Background Image & Eggplant Opacity Overlay */}
-      <section className="relative text-center max-w-5xl mx-auto px-6 py-14 rounded-3xl overflow-hidden shadow-2xl border border-palette-lilac/30 text-white">
+      <section className="relative text-center max-w-5xl mx-auto px-6 py-16 rounded-3xl overflow-hidden shadow-2xl border-2 border-palette-lilac/40 text-white animate-scaleUp">
         <div 
-          className="absolute inset-0 bg-cover bg-center scale-105"
+          className="absolute inset-0 bg-cover bg-center scale-105 transition-transform duration-1000"
           style={{ backgroundImage: `url('/images/dishes/kaapi_lounge.jpg')` }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-palette-eggplant/95 via-palette-eggplantDark/90 to-palette-eggplant/95 backdrop-blur-xs" />
 
-        <div className="relative z-10 space-y-3">
-          <div className="inline-flex items-center gap-2 bg-white/10 text-white px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider mb-2 shadow-inner border border-palette-shamrock/40">
-            <Phone className="w-4 h-4 text-palette-shamrock" />
-            <span>Connect with Concierge</span>
+        <div className="relative z-10 space-y-4">
+          <div className="inline-flex items-center gap-2 bg-white/10 text-white px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider mb-2 shadow-inner border border-palette-shamrock/40">
+            <Phone className="w-4 h-4 text-palette-shamrock animate-bounce" />
+            <span>24/7 Culinary Concierge Hotline</span>
           </div>
-          <h1 className="font-serif text-4xl sm:text-5xl font-extrabold text-white">
-            Contact <span className="bg-gradient-to-r from-white via-palette-shamrock to-white bg-[length:200%_auto] animate-gradient-shift bg-clip-text text-transparent">The Royal Table Concierge</span>
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight">
+            Contact <span className="bg-gradient-to-r from-white via-palette-shamrock to-white bg-clip-text text-transparent">The Royal Table Concierge</span>
           </h1>
-          <p className="text-palette-lilac/90 text-sm sm:text-base max-w-2xl mx-auto">
-            Have a query about South Indian catering packages, custom menus, or date availability? Reach out to our event specialists.
+          <p className="text-palette-lilac/90 text-xs sm:text-base max-w-2xl mx-auto font-medium">
+            Have a question about South Indian catering packages, custom menu tasting, or event dates? Our royal event coordinators are ready to assist you.
           </p>
         </div>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      {/* Main Grid: Inquiry Form & Communication Cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 relative z-10">
         
         {/* Left Column: Form */}
-        <div className="lg:col-span-7 bg-white p-8 rounded-3xl border border-palette-laceBorder shadow-md">
-          <h2 className="font-serif text-2xl font-extrabold text-palette-eggplant mb-6">Send an Inquiry Message</h2>
+        <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl relative overflow-hidden transition-all duration-300 hover:shadow-2xl">
+          <div className="flex items-center justify-between mb-6 pb-4 border-b border-palette-laceBorder">
+            <div>
+              <h2 className="font-serif text-2xl font-extrabold text-palette-eggplant">Send an Inquiry Message</h2>
+              <p className="text-xs text-palette-eggplant/70 font-medium">We respond to all catering inquiries within 2 hours.</p>
+            </div>
+            <span className="w-3 h-3 rounded-full bg-palette-shamrock animate-ping" />
+          </div>
 
           {submitted ? (
-            <div className="text-center py-12 space-y-4">
-              <CheckCircle className="w-16 h-16 text-palette-shamrock mx-auto" />
-              <h3 className="font-serif text-2xl font-bold text-palette-eggplant">Message Sent Successfully!</h3>
-              <p className="text-palette-eggplant/75 text-sm max-w-md mx-auto">
-                Thank you for contacting us, <span className="font-bold text-palette-eggplant">{formData.name}</span>. Our event coordinator will get back to you shortly.
-              </p>
+            <div className="text-center py-12 space-y-5 animate-scaleUp">
+              <div className="w-20 h-20 bg-palette-shamrock/20 rounded-full border-2 border-palette-shamrock flex items-center justify-center mx-auto">
+                <CheckCircle className="w-10 h-10 text-palette-shamrock" />
+              </div>
+              <div>
+                <h3 className="font-serif text-2xl font-extrabold text-palette-eggplant">Message Sent Successfully!</h3>
+                <p className="text-palette-eggplant/75 text-sm max-w-md mx-auto mt-2">
+                  Thank you, <span className="font-bold text-palette-eggplant">{formData.name}</span>. Our royal event coordinator will contact you shortly via phone or WhatsApp.
+                </p>
+              </div>
               <button
                 onClick={() => setSubmitted(false)}
-                className="px-6 py-2.5 bg-palette-lilacLight text-palette-eggplant rounded-xl font-bold text-xs hover:bg-palette-lilac/30 border border-palette-lilac/30"
+                className="px-6 py-3 bg-palette-shamrock hover:bg-palette-shamrockDark text-white rounded-xl font-extrabold text-xs shadow-md transition-all cursor-pointer"
               >
                 Send Another Message
               </button>
@@ -87,146 +102,223 @@ export default function ContactPage() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-bold uppercase text-palette-eggplant/80 mb-1">Full Name *</label>
+                  <label className="block text-xs font-extrabold uppercase text-palette-eggplant/80 mb-1">
+                    Full Name *
+                  </label>
                   <input
                     type="text"
                     required
                     placeholder="Kalyanaraman S"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock"
+                    className="w-full px-4 py-3 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock focus:ring-2 focus:ring-palette-shamrock/20 transition-all font-medium"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold uppercase text-palette-eggplant/80 mb-1">Phone Number *</label>
+                  <label className="block text-xs font-extrabold uppercase text-palette-eggplant/80 mb-1">
+                    Phone Number *
+                  </label>
                   <input
                     type="text"
                     required
                     placeholder="+91 98400 12345"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full px-4 py-2.5 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock"
+                    className="w-full px-4 py-3 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock focus:ring-2 focus:ring-palette-shamrock/20 transition-all font-medium"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase text-palette-eggplant/80 mb-1">Email Address *</label>
+                <label className="block text-xs font-extrabold uppercase text-palette-eggplant/80 mb-1">
+                  Email Address *
+                </label>
                 <input
                   type="email"
                   required
                   placeholder="name@example.com"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock"
+                  className="w-full px-4 py-3 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock focus:ring-2 focus:ring-palette-shamrock/20 transition-all font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase text-palette-eggplant/80 mb-1">Inquiry Subject</label>
+                <label className="block text-xs font-extrabold uppercase text-palette-eggplant/80 mb-1">
+                  Inquiry Subject
+                </label>
                 <input
                   type="text"
-                  placeholder="e.g. South Indian Wedding Banana Leaf Feast Quote"
+                  placeholder="e.g. Grand Wedding Banana Leaf Feast Quote"
                   value={formData.subject}
                   onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full px-4 py-2.5 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock"
+                  className="w-full px-4 py-3 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock focus:ring-2 focus:ring-palette-shamrock/20 transition-all font-medium"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase text-palette-eggplant/80 mb-1">Your Message *</label>
+                <label className="block text-xs font-extrabold uppercase text-palette-eggplant/80 mb-1">
+                  Your Message *
+                </label>
                 <textarea
                   rows="4"
                   required
-                  placeholder="Details regarding your event date, location, expected guests..."
+                  placeholder="Details regarding your event date, venue location, expected guests..."
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full p-3 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock"
+                  className="w-full p-3 bg-palette-lace border border-palette-laceBorder rounded-xl text-sm text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:border-palette-shamrock focus:ring-2 focus:ring-palette-shamrock/20 transition-all font-medium"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-3.5 rounded-2xl bg-palette-eggplant hover:bg-palette-eggplantDark text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-md transition-all"
+                className="w-full py-4 rounded-2xl bg-palette-shamrock hover:bg-palette-shamrockDark text-white font-black text-sm flex items-center justify-center gap-2 shadow-lg hover:scale-[1.01] transition-all cursor-pointer"
               >
-                <Send className="w-4 h-4 text-palette-shamrock" />
+                <Send className="w-4 h-4 text-white" />
                 <span>Submit Inquiry Message</span>
               </button>
             </form>
           )}
         </div>
 
-        {/* Right Column: Direct Info Cards */}
+        {/* Right Column: Direct Info Cards & Interactive Studio Map */}
         <div className="lg:col-span-5 space-y-6">
-          <div className="bg-white p-6 rounded-3xl border border-palette-laceBorder shadow-md space-y-4">
-            <h3 className="font-serif text-xl font-extrabold text-palette-eggplant">Direct Communication</h3>
+          
+          {/* Direct Communication Info Card */}
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-5 transition-all hover:shadow-2xl">
+            <div className="flex items-center justify-between border-b border-palette-laceBorder pb-3">
+              <h3 className="font-serif text-xl font-extrabold text-palette-eggplant">Direct Communication</h3>
+              <span className="text-[10px] uppercase font-black text-palette-shamrock bg-palette-shamrock/15 px-2.5 py-0.5 rounded-full border border-palette-shamrock/30">
+                Fast Support
+              </span>
+            </div>
             
-            <div className="space-y-3 text-sm text-palette-eggplant">
-              <div className="flex items-center gap-3 p-3 bg-palette-lace rounded-xl border border-palette-laceBorder">
-                <Phone className="w-5 h-5 text-palette-shamrock" />
+            <div className="space-y-3.5 text-sm text-palette-eggplant">
+              <div className="flex items-center gap-3.5 p-3.5 bg-gradient-to-r from-palette-lace to-palette-lilacLight/40 rounded-2xl border border-palette-laceBorder hover:border-palette-shamrock/40 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-palette-eggplant text-white flex items-center justify-center shrink-0 shadow-md">
+                  <Phone className="w-5 h-5 text-palette-shamrock" />
+                </div>
                 <div>
-                  <p className="text-[10px] text-palette-eggplant/60 uppercase font-bold">24/7 Hotline & WhatsApp</p>
-                  <a href="tel:+919840012345" className="font-bold text-palette-eggplant hover:text-palette-shamrock">
+                  <p className="text-[10px] text-palette-eggplant/60 uppercase font-extrabold">24/7 Helpline & WhatsApp</p>
+                  <a href="tel:+919840012345" className="font-extrabold text-palette-eggplant hover:text-palette-shamrock transition-colors block text-sm">
                     +91 98400 12345 / +91 94440 54321
                   </a>
-                  <p className="text-[10px] text-palette-shamrock font-bold mt-0.5">Toll-Free: 1800-425-7890</p>
+                  <p className="text-[10px] text-palette-shamrock font-bold mt-0.5">Toll-Free Helpline: 1800-425-7890</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-palette-lace rounded-xl border border-palette-laceBorder">
-                <Mail className="w-5 h-5 text-palette-eggplant" />
+              <div className="flex items-center gap-3.5 p-3.5 bg-gradient-to-r from-palette-lace to-palette-lilacLight/40 rounded-2xl border border-palette-laceBorder hover:border-palette-shamrock/40 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-palette-eggplant text-white flex items-center justify-center shrink-0 shadow-md">
+                  <Mail className="w-5 h-5 text-palette-shamrock" />
+                </div>
                 <div>
-                  <p className="text-[10px] text-palette-eggplant/60 uppercase font-bold">Official Email</p>
-                  <a href="mailto:bookings@royaltablecatering.com" className="font-bold text-palette-eggplant hover:text-palette-shamrock">
+                  <p className="text-[10px] text-palette-eggplant/60 uppercase font-extrabold">Official Email</p>
+                  <a href="mailto:bookings@royaltablecatering.com" className="font-extrabold text-palette-eggplant hover:text-palette-shamrock transition-colors text-sm">
                     bookings@royaltablecatering.com
                   </a>
                 </div>
               </div>
 
-              <div className="flex items-start gap-3 p-3 bg-palette-lace rounded-xl border border-palette-laceBorder">
-                <MapPin className="w-5 h-5 text-palette-shamrock shrink-0 mt-1" />
+              <div className="flex items-start gap-3.5 p-3.5 bg-gradient-to-r from-palette-lace to-palette-lilacLight/40 rounded-2xl border border-palette-laceBorder hover:border-palette-shamrock/40 transition-colors">
+                <div className="w-10 h-10 rounded-xl bg-palette-eggplant text-white flex items-center justify-center shrink-0 shadow-md mt-0.5">
+                  <MapPin className="w-5 h-5 text-palette-shamrock" />
+                </div>
                 <div>
-                  <p className="text-[10px] text-palette-eggplant/60 uppercase font-bold">Head Studio Location</p>
-                  <p className="text-palette-eggplant text-xs">108 Royal Heritage Boulevard, Culinary District, Metro City</p>
+                  <p className="text-[10px] text-palette-eggplant/60 uppercase font-extrabold">Studio & Test Kitchen</p>
+                  <p className="text-palette-eggplant text-xs font-bold leading-snug">
+                    108 Royal Heritage Boulevard, Culinary District, Metro City
+                  </p>
                 </div>
               </div>
             </div>
 
-            {/* Direct WhatsApp Action */}
+            {/* Direct WhatsApp Action Button */}
             <a
               href="https://wa.me/919840012345?text=Hello%20Royal%20Table%20Catering!%20I%20want%20to%20inquire%20about%20South%20Indian%20catering%20services."
               target="_blank"
               rel="noreferrer"
-              className="w-full py-3.5 rounded-2xl bg-palette-shamrock hover:bg-palette-shamrockDark text-white font-extrabold text-sm flex items-center justify-center gap-2 shadow-md transition-all"
+              className="w-full py-4 rounded-2xl bg-palette-shamrock hover:bg-palette-shamrockDark text-white font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-palette-shamrock/30 hover:scale-[1.02] active:scale-95 transition-all cursor-pointer"
             >
               <MessageCircle className="w-5 h-5 fill-white" />
-              <span>Instant Chat on WhatsApp</span>
+              <span>Instant Chat on WhatsApp 💬</span>
             </a>
           </div>
+
+          {/* Interactive Culinary Studio Map Card */}
+          <div className="bg-gradient-to-br from-palette-eggplant via-palette-eggplantDark to-palette-eggplant text-white p-6 rounded-3xl border-2 border-palette-shamrock/40 shadow-xl space-y-4 relative overflow-hidden">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Navigation className="w-4 h-4 text-palette-shamrock animate-pulse" />
+                <h4 className="font-serif font-extrabold text-base text-white">Visit Kitchen & Tasting Studio</h4>
+              </div>
+              <span className="text-[10px] font-black uppercase text-palette-shamrock bg-palette-shamrock/20 px-2 py-0.5 rounded-full border border-palette-shamrock/40">
+                Open Daily
+              </span>
+            </div>
+
+            <p className="text-xs text-palette-lilac/90 leading-relaxed font-medium">
+              Join us for a complimentary tasting session. Experience our authentic banana leaf feast prep and live counter setups in person.
+            </p>
+
+            <div className="flex items-center justify-between pt-2 border-t border-white/15 text-xs">
+              <div className="flex items-center gap-2 text-white font-bold">
+                <Clock className="w-4 h-4 text-palette-shamrock" />
+                <span>9:00 AM – 10:00 PM (IST)</span>
+              </div>
+              <a
+                href="https://maps.google.com"
+                target="_blank"
+                rel="noreferrer"
+                className="text-palette-shamrock font-extrabold hover:underline inline-flex items-center gap-1 text-xs"
+              >
+                <span>Get Directions</span>
+                <Navigation className="w-3 h-3" />
+              </a>
+            </div>
+          </div>
+
         </div>
 
       </div>
 
-      {/* FAQ Section */}
-      <div className="max-w-4xl mx-auto pt-8">
-        <h2 className="font-serif text-2xl font-extrabold text-palette-eggplant text-center mb-8">
-          Frequently Asked Questions
-        </h2>
+      {/* FAQ Accordion Section */}
+      <div className="max-w-4xl mx-auto pt-8 relative z-10">
+        <div className="text-center space-y-2 mb-10">
+          <span className="text-xs font-extrabold uppercase tracking-widest text-palette-eggplant bg-palette-lilac/30 px-3.5 py-1 rounded-full border border-palette-lilac/40">
+            Help & Guidance
+          </span>
+          <h2 className="font-serif text-3xl font-extrabold text-palette-eggplant">
+            Frequently Asked Questions
+          </h2>
+        </div>
+
         <div className="space-y-4">
           {faqs.map((faq, idx) => (
             <div
               key={idx}
-              className="bg-white rounded-2xl border border-palette-laceBorder overflow-hidden shadow-sm"
+              className={`rounded-2xl border-2 transition-all duration-300 overflow-hidden ${
+                openFaq === idx
+                  ? 'bg-white border-palette-shamrock shadow-lg ring-2 ring-palette-shamrock/20'
+                  : 'bg-white/80 border-palette-laceBorder hover:border-palette-lilac shadow-sm'
+              }`}
             >
               <button
                 onClick={() => setOpenFaq(openFaq === idx ? -1 : idx)}
-                className="w-full p-5 text-left font-serif text-base font-bold text-palette-eggplant flex items-center justify-between gap-4"
+                className="w-full p-5 text-left font-serif text-base font-extrabold text-palette-eggplant flex items-center justify-between gap-4 cursor-pointer"
               >
-                <span>{faq.q}</span>
-                {openFaq === idx ? <ChevronUp className="w-5 h-5 text-palette-shamrock" /> : <ChevronDown className="w-5 h-5 text-palette-eggplant/40" />}
+                <span className="flex items-center gap-2">
+                  <Sparkles className="w-4 h-4 text-palette-shamrock shrink-0" />
+                  <span>{faq.q}</span>
+                </span>
+                {openFaq === idx ? (
+                  <ChevronUp className="w-5 h-5 text-palette-shamrock shrink-0" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 text-palette-eggplant/40 shrink-0" />
+                )}
               </button>
+
               {openFaq === idx && (
-                <div className="px-5 pb-5 text-xs text-palette-eggplant/80 leading-relaxed border-t border-palette-laceBorder pt-3">
+                <div className="px-5 pb-5 text-xs sm:text-sm text-palette-eggplant/85 leading-relaxed border-t border-palette-laceBorder/60 pt-3.5 bg-palette-lace/30 animate-fadeIn">
                   {faq.a}
                 </div>
               )}
