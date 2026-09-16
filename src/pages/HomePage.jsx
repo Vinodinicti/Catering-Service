@@ -164,25 +164,25 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
                       {service.badge}
                     </span>
                   </div>
-                  <div className="p-3 sm:p-5 space-y-1.5 sm:space-y-3">
-                    <h3 className="font-serif text-sm sm:text-xl font-bold text-palette-eggplant group-hover:text-palette-shamrock transition-colors line-clamp-1 sm:line-clamp-none">
+                  <div className="p-3.5 sm:p-5 space-y-2">
+                    <h3 className="font-serif text-sm sm:text-xl font-extrabold text-palette-eggplant group-hover:text-palette-shamrock transition-colors leading-snug">
                       {service.title}
                     </h3>
-                    <p className="text-palette-eggplant/75 text-[11px] sm:text-xs leading-relaxed line-clamp-2 sm:line-clamp-none">
+                    <p className="text-palette-eggplant/90 text-xs sm:text-sm leading-relaxed font-normal">
                       {service.desc}
                     </p>
                   </div>
                 </div>
-                <div className="p-3 sm:p-5 pt-0">
+                <div className="p-3.5 sm:p-5 pt-0">
                   <button
                     onClick={() => {
                       setActiveTab('catering');
                       window.scrollTo({ top: 0, behavior: 'smooth' });
                     }}
-                    className="pt-1 text-[11px] sm:text-xs font-bold text-palette-eggplant flex items-center gap-1 hover:gap-2 transition-all"
+                    className="pt-1 text-xs font-bold text-palette-eggplant flex items-center gap-1 hover:gap-2 transition-all"
                   >
-                    <span>Packages</span>
-                    <ChevronRight className="w-3.5 h-3.5 text-palette-shamrock" />
+                    <span>View Packages</span>
+                    <ChevronRight className="w-4 h-4 text-palette-shamrock" />
                   </button>
                 </div>
               </Card3DTilt>
@@ -223,13 +223,13 @@ export default function HomePage({ setActiveTab, onOpenEstimate, onOpenBooking }
               return (
                 <div
                   key={station.id}
-                  className="bg-white text-palette-eggplant p-3.5 sm:p-6 rounded-2xl border-2 border-palette-shamrock/40 shadow-lilac-lg hover:border-palette-shamrock hover:-translate-y-2 hover:rotate-1 hover:shadow-2xl transition-all duration-300 space-y-2 sm:space-y-4 group cursor-pointer"
+                  className="bg-white text-palette-eggplant p-4 sm:p-6 rounded-2xl border-2 border-palette-shamrock/40 shadow-lilac-lg hover:border-palette-shamrock hover:-translate-y-2 hover:rotate-1 hover:shadow-2xl transition-all duration-300 space-y-2.5 group cursor-pointer"
                 >
                   <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-tr ${iconGradients[idx % 4]} flex items-center justify-center text-white shadow-md group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300`}>
                     <Flame className="w-5 h-5 sm:w-6 sm:h-6 fill-white animate-bounce-subtle" />
                   </div>
-                  <h3 className="font-serif text-sm sm:text-lg font-bold text-palette-eggplant group-hover:text-palette-shamrock transition-colors line-clamp-1 sm:line-clamp-none">{station.name}</h3>
-                  <p className="text-palette-eggplant/80 text-[11px] sm:text-xs leading-relaxed line-clamp-2 sm:line-clamp-none">{station.description}</p>
+                  <h3 className="font-serif text-sm sm:text-lg font-bold text-palette-eggplant group-hover:text-palette-shamrock transition-colors leading-snug">{station.name}</h3>
+                  <p className="text-palette-eggplant/90 text-xs leading-relaxed font-normal">{station.description}</p>
                 </div>
               );
             })}
