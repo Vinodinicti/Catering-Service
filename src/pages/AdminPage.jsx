@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { LayoutDashboard, CalendarCheck, MessageSquare, Utensils, Package, Plus, Trash2, LogOut, ShieldCheck, CheckCircle2, XCircle, TrendingUp, Sparkles, Filter } from 'lucide-react';
+import { LayoutDashboard, CalendarCheck, MessageSquare, Utensils, Package, Plus, Trash2, LogOut, ShieldCheck, CheckCircle2, TrendingUp, Sparkles, User, Calendar, Users, DollarSign } from 'lucide-react';
 import { MENU_ITEMS } from '../data/menuData';
 import { CATERING_PACKAGES } from '../data/packageData';
 
@@ -71,49 +71,49 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
   };
 
   return (
-    <div className="pt-28 pb-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 bg-palette-lace text-palette-eggplant relative overflow-hidden animate-fadeIn">
+    <div className="pt-28 pb-16 max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-8 bg-palette-lace text-palette-eggplant relative overflow-hidden animate-fadeIn">
       
-      {/* Background Glow Accents */}
+      {/* Ambient Lighting Accents */}
       <div className="absolute top-12 right-12 w-96 h-96 bg-palette-lilac/20 rounded-full blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute bottom-12 left-12 w-96 h-96 bg-palette-shamrock/15 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Admin Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-6 rounded-3xl border-2 border-palette-laceBorder shadow-xl relative z-10 transition-all">
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-palette-eggplant text-white flex items-center justify-center shadow-md shrink-0 border border-palette-shamrock/40">
-            <LayoutDashboard className="w-6 h-6 text-palette-shamrock animate-pulse" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 sm:p-6 rounded-3xl border-2 border-palette-laceBorder shadow-xl relative z-10">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-palette-eggplant text-white flex items-center justify-center shadow-md shrink-0 border border-palette-shamrock/40">
+            <LayoutDashboard className="w-5 h-5 sm:w-6 sm:h-6 text-palette-shamrock animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-serif text-2xl font-extrabold text-palette-eggplant tracking-tight">Royal Table Admin Portal</h1>
-              <span className="bg-palette-shamrock/20 text-palette-shamrock border border-palette-shamrock/40 px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase flex items-center gap-1 shadow-sm">
+              <h1 className="font-serif text-lg sm:text-2xl font-extrabold text-palette-eggplant tracking-tight">Royal Table Admin Portal</h1>
+              <span className="bg-palette-shamrock/20 text-palette-shamrock border border-palette-shamrock/40 px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase flex items-center gap-1 shadow-sm">
                 <ShieldCheck className="w-3 h-3" />
                 <span>Authenticated</span>
               </span>
             </div>
-            <p className="text-xs text-palette-eggplant/75 font-medium">Manage South Indian Catering Services, Quotations, Enquiries & Menus</p>
+            <p className="text-[11px] sm:text-xs text-palette-eggplant/75 font-medium">Manage South Indian Catering Services, Quotations, Enquiries & Menus</p>
           </div>
         </div>
 
         {onLogout && (
           <button
             onClick={onLogout}
-            className="px-4 py-2.5 rounded-xl bg-palette-lace hover:bg-red-50 text-red-600 font-extrabold text-xs flex items-center justify-center gap-2 border border-red-200 transition-all shadow-sm hover:scale-105 cursor-pointer self-start sm:self-auto"
+            className="px-3.5 py-2 rounded-xl bg-palette-lace hover:bg-red-50 text-red-600 font-extrabold text-xs flex items-center justify-center gap-1.5 border border-red-200 transition-all shadow-sm hover:scale-105 cursor-pointer self-start sm:self-auto"
           >
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-3.5 h-3.5" />
             <span>Lock & Log Out</span>
           </button>
         )}
       </div>
 
-      {/* Admin Tab Navigation Bar */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-palette-laceBorder relative z-10">
+      {/* MOBILE PARTITIONED SEGMENT TAB SELECTOR (2-per-row grid on mobile, flex row on desktop) */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex lg:items-center gap-2 relative z-10">
         {[
-          { id: 'dashboard', label: 'Dashboard Overview', icon: LayoutDashboard },
-          { id: 'bookings', label: `Manage Bookings (${totalBookingsCount})`, icon: CalendarCheck, badge: pendingBookingsCount },
-          { id: 'enquiries', label: `Customer Enquiries (${enquiries.length})`, icon: MessageSquare, badge: unreadEnquiriesCount },
-          { id: 'menu', label: `Food Menu Items (${adminMenu.length})`, icon: Utensils },
-          { id: 'packages', label: 'Catering Packages', icon: Package }
+          { id: 'dashboard', label: 'Overview', icon: LayoutDashboard },
+          { id: 'bookings', label: `Bookings (${totalBookingsCount})`, icon: CalendarCheck, badge: pendingBookingsCount },
+          { id: 'enquiries', label: `Enquiries (${enquiries.length})`, icon: MessageSquare, badge: unreadEnquiriesCount },
+          { id: 'menu', label: `Food Menu (${adminMenu.length})`, icon: Utensils },
+          { id: 'packages', label: 'Packages', icon: Package }
         ].map((tab) => {
           const Icon = tab.icon;
           const isActive = activeAdminTab === tab.id;
@@ -121,16 +121,18 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
             <button
               key={tab.id}
               onClick={() => setActiveAdminTab(tab.id)}
-              className={`px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all duration-300 flex items-center gap-2 border cursor-pointer ${
+              className={`p-2.5 sm:px-4 sm:py-2.5 rounded-2xl text-xs font-bold transition-all duration-300 flex items-center justify-between sm:justify-start gap-2 border cursor-pointer ${
                 isActive
                   ? 'bg-palette-eggplant text-white border-palette-eggplant shadow-lg font-extrabold scale-[1.02]'
                   : 'bg-white text-palette-eggplant/80 hover:text-palette-eggplant hover:bg-palette-lilacLight/40 border-palette-laceBorder'
               }`}
             >
-              <Icon className={`w-4 h-4 ${isActive ? 'text-palette-shamrock' : 'text-palette-eggplant/60'}`} />
-              <span>{tab.label}</span>
+              <div className="flex items-center gap-1.5">
+                <Icon className={`w-3.5 h-3.5 ${isActive ? 'text-palette-shamrock' : 'text-palette-eggplant/60'}`} />
+                <span className="truncate">{tab.label}</span>
+              </div>
               {tab.badge > 0 && (
-                <span className="px-1.5 py-0.5 rounded-full text-[9px] bg-palette-shamrock text-white font-black animate-pulse">
+                <span className="px-1.5 py-0.2 rounded-full text-[9px] bg-palette-shamrock text-white font-black animate-pulse">
                   {tab.badge}
                 </span>
               )}
@@ -141,70 +143,72 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
 
       {/* --- TAB 1: DASHBOARD OVERVIEW --- */}
       {activeAdminTab === 'dashboard' && (
-        <div className="space-y-8 relative z-10 animate-scaleUp">
+        <div className="space-y-6 sm:space-y-8 relative z-10 animate-scaleUp">
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white p-6 rounded-3xl border-2 border-palette-laceBorder hover:border-palette-shamrock/60 shadow-md hover:shadow-xl transition-all duration-300 space-y-2 group">
-              <span className="text-[10px] font-black uppercase tracking-wider text-palette-eggplant/60 flex items-center justify-between">
-                <span>Total Estimated Revenue</span>
-                <TrendingUp className="w-4 h-4 text-palette-shamrock group-hover:scale-125 transition-transform" />
+          {/* PARTITIONED STAT CARDS (2x2 Grid on Mobile, 4-col on Desktop) */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+            <div className="bg-white p-4 sm:p-6 rounded-3xl border-2 border-palette-laceBorder hover:border-palette-shamrock/60 shadow-md hover:shadow-xl transition-all duration-300 space-y-1 sm:space-y-2 group">
+              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-palette-eggplant/60 flex items-center justify-between">
+                <span>Est. Revenue</span>
+                <TrendingUp className="w-3.5 h-3.5 text-palette-shamrock" />
               </span>
-              <div className="font-sans text-3xl font-black text-palette-eggplant tracking-tight">
+              <div className="font-sans text-xl sm:text-3xl font-black text-palette-eggplant tracking-tight">
                 ₹{totalRevenueEstimated.toLocaleString('en-IN')}
               </div>
-              <p className="text-[11px] text-palette-shamrock font-bold">Across all active catering requests</p>
+              <p className="text-[10px] sm:text-[11px] text-palette-shamrock font-bold truncate">Across active requests</p>
             </div>
 
-            <div className="bg-white p-6 rounded-3xl border-2 border-palette-laceBorder hover:border-palette-shamrock/60 shadow-md hover:shadow-xl transition-all duration-300 space-y-2 group">
-              <span className="text-[10px] font-black uppercase tracking-wider text-palette-eggplant/60 flex items-center justify-between">
-                <span>Active Bookings</span>
-                <CalendarCheck className="w-4 h-4 text-palette-eggplant group-hover:scale-125 transition-transform" />
+            <div className="bg-white p-4 sm:p-6 rounded-3xl border-2 border-palette-laceBorder hover:border-palette-shamrock/60 shadow-md hover:shadow-xl transition-all duration-300 space-y-1 sm:space-y-2 group">
+              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-palette-eggplant/60 flex items-center justify-between">
+                <span>Bookings</span>
+                <CalendarCheck className="w-3.5 h-3.5 text-palette-eggplant" />
               </span>
-              <div className="font-sans text-3xl font-black text-palette-eggplant tracking-tight">
+              <div className="font-sans text-xl sm:text-3xl font-black text-palette-eggplant tracking-tight">
                 {totalBookingsCount}
               </div>
-              <p className="text-[11px] text-palette-shamrock font-bold">{pendingBookingsCount} pending confirmation</p>
+              <p className="text-[10px] sm:text-[11px] text-palette-shamrock font-bold truncate">{pendingBookingsCount} pending</p>
             </div>
 
-            <div className="bg-white p-6 rounded-3xl border-2 border-palette-laceBorder hover:border-palette-shamrock/60 shadow-md hover:shadow-xl transition-all duration-300 space-y-2 group">
-              <span className="text-[10px] font-black uppercase tracking-wider text-palette-eggplant/60 flex items-center justify-between">
-                <span>Customer Inquiries</span>
-                <MessageSquare className="w-4 h-4 text-palette-eggplant group-hover:scale-125 transition-transform" />
+            <div className="bg-white p-4 sm:p-6 rounded-3xl border-2 border-palette-laceBorder hover:border-palette-shamrock/60 shadow-md hover:shadow-xl transition-all duration-300 space-y-1 sm:space-y-2 group">
+              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-palette-eggplant/60 flex items-center justify-between">
+                <span>Enquiries</span>
+                <MessageSquare className="w-3.5 h-3.5 text-palette-eggplant" />
               </span>
-              <div className="font-sans text-3xl font-black text-palette-eggplant tracking-tight">
+              <div className="font-sans text-xl sm:text-3xl font-black text-palette-eggplant tracking-tight">
                 {enquiries.length}
               </div>
-              <p className="text-[11px] text-palette-eggplant font-bold">{unreadEnquiriesCount} unread messages</p>
+              <p className="text-[10px] sm:text-[11px] text-palette-eggplant font-bold truncate">{unreadEnquiriesCount} unread</p>
             </div>
 
-            <div className="bg-white p-6 rounded-3xl border-2 border-palette-laceBorder hover:border-palette-shamrock/60 shadow-md hover:shadow-xl transition-all duration-300 space-y-2 group">
-              <span className="text-[10px] font-black uppercase tracking-wider text-palette-eggplant/60 flex items-center justify-between">
-                <span>Menu Catalog Items</span>
-                <Utensils className="w-4 h-4 text-palette-shamrock group-hover:scale-125 transition-transform" />
+            <div className="bg-white p-4 sm:p-6 rounded-3xl border-2 border-palette-laceBorder hover:border-palette-shamrock/60 shadow-md hover:shadow-xl transition-all duration-300 space-y-1 sm:space-y-2 group">
+              <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-palette-eggplant/60 flex items-center justify-between">
+                <span>Menu Dishes</span>
+                <Utensils className="w-3.5 h-3.5 text-palette-shamrock" />
               </span>
-              <div className="font-sans text-3xl font-black text-palette-eggplant tracking-tight">
+              <div className="font-sans text-xl sm:text-3xl font-black text-palette-eggplant tracking-tight">
                 {adminMenu.length} Dishes
               </div>
-              <p className="text-[11px] text-palette-shamrock font-bold">Across 6 South Indian categories</p>
+              <p className="text-[10px] sm:text-[11px] text-palette-shamrock font-bold truncate">6 Categories</p>
             </div>
           </div>
 
-          {/* Recent Event Bookings Table */}
-          <div className="bg-white p-6 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-4">
+          {/* RECENT BOOKINGS: PARTITIONED MOBILE CARDS + DESKTOP TABLE */}
+          <div className="bg-white p-4 sm:p-6 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="font-serif text-xl font-extrabold text-palette-eggplant">Recent Event Bookings</h3>
-                <p className="text-xs text-palette-eggplant/70">Latest client catering requests and status</p>
+                <h3 className="font-serif text-lg sm:text-xl font-extrabold text-palette-eggplant">Recent Event Bookings</h3>
+                <p className="text-xs text-palette-eggplant/70 hidden sm:block">Latest client catering requests and status</p>
               </div>
               <button
                 onClick={() => setActiveAdminTab('bookings')}
                 className="text-xs text-palette-shamrock font-extrabold hover:underline cursor-pointer"
               >
-                View All Bookings →
+                View All →
               </button>
             </div>
 
-            <div className="overflow-x-auto rounded-2xl border border-palette-laceBorder">
+            {/* Desktop Table View (md:block) */}
+            <div className="hidden md:block overflow-x-auto rounded-2xl border border-palette-laceBorder">
               <table className="w-full text-left text-xs text-palette-eggplant">
                 <thead className="bg-palette-eggplant text-white font-extrabold uppercase text-[10px]">
                   <tr>
@@ -238,25 +242,55 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
                 </tbody>
               </table>
             </div>
+
+            {/* Mobile Partitioned Card Stack View (block md:hidden) */}
+            <div className="block md:hidden space-y-3">
+              {bookings.slice(0, 5).map((b) => (
+                <div key={b.id} className="bg-white rounded-2xl border-2 border-palette-laceBorder shadow-sm overflow-hidden text-xs">
+                  <div className="bg-palette-lilacLight/60 p-2.5 border-b border-palette-laceBorder flex items-center justify-between">
+                    <span className="font-mono font-black text-palette-eggplant">{b.id}</span>
+                    <span className={`px-2 py-0.5 rounded-full text-[9px] font-black uppercase ${
+                      b.status === 'Confirmed'
+                        ? 'bg-palette-shamrock/20 text-palette-shamrock border border-palette-shamrock/40'
+                        : 'bg-amber-100 text-amber-800 border border-amber-300'
+                    }`}>
+                      {b.status}
+                    </span>
+                  </div>
+                  <div className="p-3 space-y-1.5">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="font-extrabold text-palette-eggplant">{b.customerName}</p>
+                        <p className="text-[11px] text-palette-eggplant/70">{b.eventType}</p>
+                      </div>
+                      <span className="font-sans font-black text-palette-shamrock text-sm">₹{getBookingCost(b).toLocaleString('en-IN')}</span>
+                    </div>
+                    <p className="text-[10px] text-palette-eggplant/60">Guests: <strong>{b.guestCount}</strong> | Date: <strong>{b.eventDate || 'TBD'}</strong></p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
           </div>
 
         </div>
       )}
 
-      {/* --- TAB 2: MANAGE BOOKINGS --- */}
+      {/* --- TAB 2: MANAGE BOOKINGS (PARTITIONED MOBILE CARDS + DESKTOP TABLE) --- */}
       {activeAdminTab === 'bookings' && (
-        <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-6 relative z-10 animate-scaleUp">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-palette-laceBorder pb-4">
+        <div className="bg-white p-4 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-6 relative z-10 animate-scaleUp">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-palette-laceBorder pb-4">
             <div>
-              <h2 className="font-serif text-2xl font-extrabold text-palette-eggplant">All Event Bookings & Quotations</h2>
+              <h2 className="font-serif text-xl sm:text-2xl font-extrabold text-palette-eggplant">All Event Bookings & Quotations</h2>
               <p className="text-xs text-palette-eggplant/70">Review, confirm, or modify upcoming South Indian event bookings.</p>
             </div>
-            <div className="text-xs text-palette-eggplant font-black bg-palette-lace px-3.5 py-1.5 rounded-xl border border-palette-laceBorder self-start sm:self-auto">
+            <div className="text-xs text-palette-eggplant font-black bg-palette-lace px-3 py-1 rounded-xl border border-palette-laceBorder self-start sm:self-auto">
               Total {bookings.length} Requests
             </div>
           </div>
 
-          <div className="overflow-x-auto rounded-2xl border border-palette-laceBorder">
+          {/* Desktop Table View (md:block) */}
+          <div className="hidden md:block overflow-x-auto rounded-2xl border border-palette-laceBorder">
             <table className="w-full text-left text-xs text-palette-eggplant">
               <thead className="bg-palette-eggplant text-white font-extrabold uppercase text-[10px]">
                 <tr>
@@ -319,19 +353,86 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
               </tbody>
             </table>
           </div>
+
+          {/* MOBILE PARTITIONED CARD STACK VIEW (block md:hidden) */}
+          <div className="block md:hidden space-y-4">
+            {bookings.map((b) => (
+              <div key={b.id} className="bg-white rounded-2xl border-2 border-palette-laceBorder shadow-md overflow-hidden text-xs">
+                {/* Partition 1: Header */}
+                <div className="bg-palette-lilacLight/60 p-3 border-b border-palette-laceBorder flex items-center justify-between">
+                  <span className="font-mono font-black text-xs text-palette-eggplant">{b.id}</span>
+                  <span className={`px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase ${
+                    b.status === 'Confirmed'
+                      ? 'bg-palette-shamrock/20 text-palette-shamrock border border-palette-shamrock/40'
+                      : 'bg-amber-100 text-amber-800 border border-amber-300'
+                  }`}>
+                    {b.status}
+                  </span>
+                </div>
+
+                {/* Partition 2: Customer & Event Partition */}
+                <div className="p-3.5 space-y-2.5">
+                  <div>
+                    <span className="text-[9px] uppercase font-bold text-palette-eggplant/50 block">Customer</span>
+                    <p className="font-extrabold text-palette-eggplant text-sm">{b.customerName}</p>
+                    <p className="text-[11px] text-palette-eggplant/70 font-medium">{b.phone} | {b.email}</p>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-2 border-t border-palette-laceBorder/60">
+                    <div>
+                      <span className="text-[9px] uppercase font-bold text-palette-eggplant/50 block">Event & Date</span>
+                      <p className="font-bold text-palette-eggplant">{b.eventType}</p>
+                      <p className="text-[11px] text-palette-shamrock font-extrabold">{b.eventDate || 'Date pending'}</p>
+                    </div>
+                    <div>
+                      <span className="text-[9px] uppercase font-bold text-palette-eggplant/50 block">Guest & Package</span>
+                      <p className="font-bold text-palette-eggplant">{b.guestCount} Guests</p>
+                      <p className="text-[11px] text-palette-eggplant/70 truncate">{getBookingPackageName(b)}</p>
+                    </div>
+                  </div>
+
+                  {/* Partition 3: Est. Investment Quote */}
+                  <div className="bg-palette-shamrock/10 p-2.5 rounded-xl border border-palette-shamrock/30 flex items-center justify-between">
+                    <span className="text-[10px] font-extrabold uppercase text-palette-eggplant/70">Estimated Quote</span>
+                    <span className="font-sans font-black text-palette-shamrock text-sm sm:text-base">₹{getBookingCost(b).toLocaleString('en-IN')}</span>
+                  </div>
+                </div>
+
+                {/* Partition 4: Actions */}
+                <div className="p-3 bg-palette-lace/50 border-t border-palette-laceBorder flex items-center justify-end gap-2">
+                  {b.status !== 'Confirmed' ? (
+                    <button
+                      onClick={() => handleUpdateBookingStatus(b.id, 'Confirmed')}
+                      className="w-full py-2 rounded-xl bg-palette-shamrock hover:bg-palette-shamrockDark text-white text-xs font-black shadow-md cursor-pointer"
+                    >
+                      Confirm Booking Request
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleUpdateBookingStatus(b.id, 'Pending')}
+                      className="w-full py-2 rounded-xl bg-palette-lace text-palette-eggplant text-xs font-bold border border-palette-laceBorder cursor-pointer"
+                    >
+                      Set Status to Pending
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+
         </div>
       )}
 
       {/* --- TAB 3: CUSTOMER ENQUIRIES --- */}
       {activeAdminTab === 'enquiries' && (
-        <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-6 relative z-10 animate-scaleUp">
+        <div className="bg-white p-4 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-6 relative z-10 animate-scaleUp">
           <div className="flex items-center justify-between border-b border-palette-laceBorder pb-4">
             <div>
-              <h2 className="font-serif text-2xl font-extrabold text-palette-eggplant">Customer Enquiries</h2>
+              <h2 className="font-serif text-xl sm:text-2xl font-extrabold text-palette-eggplant">Customer Enquiries</h2>
               <p className="text-xs text-palette-eggplant/70">General messages and catering custom requests.</p>
             </div>
             <div className="text-xs font-black text-palette-shamrock bg-palette-shamrock/15 px-3 py-1 rounded-xl border border-palette-shamrock/30">
-              {unreadEnquiriesCount} Unread Messages
+              {unreadEnquiriesCount} Unread
             </div>
           </div>
 
@@ -339,7 +440,7 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
             {enquiries.map((e) => (
               <div
                 key={e.id}
-                className={`p-5 rounded-2xl border-2 transition-all ${
+                className={`p-4 sm:p-5 rounded-2xl border-2 transition-all ${
                   e.status === 'Unread'
                     ? 'bg-palette-lilacLight/40 border-palette-shamrock shadow-md'
                     : 'bg-white border-palette-laceBorder'
@@ -376,10 +477,10 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
 
       {/* --- TAB 4: FOOD MENU ITEMS --- */}
       {activeAdminTab === 'menu' && (
-        <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-6 relative z-10 animate-scaleUp">
+        <div className="bg-white p-4 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-6 relative z-10 animate-scaleUp">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-palette-laceBorder pb-4">
             <div>
-              <h2 className="font-serif text-2xl font-extrabold text-palette-eggplant">Manage Food Menu Catalog</h2>
+              <h2 className="font-serif text-xl sm:text-2xl font-extrabold text-palette-eggplant">Manage Food Menu Catalog</h2>
               <p className="text-xs text-palette-eggplant/70">Add or edit dishes rendered on the Food Menu page.</p>
             </div>
             <button
@@ -417,9 +518,9 @@ export default function AdminPage({ bookings, setBookings, enquiries, setEnquiri
 
       {/* --- TAB 5: CATERING PACKAGES --- */}
       {activeAdminTab === 'packages' && (
-        <div className="bg-white p-6 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-6 relative z-10 animate-scaleUp">
+        <div className="bg-white p-4 sm:p-8 rounded-3xl border-2 border-palette-laceBorder shadow-xl space-y-6 relative z-10 animate-scaleUp">
           <div className="border-b border-palette-laceBorder pb-4">
-            <h2 className="font-serif text-2xl font-extrabold text-palette-eggplant">South Indian Catering Packages</h2>
+            <h2 className="font-serif text-xl sm:text-2xl font-extrabold text-palette-eggplant">South Indian Catering Packages</h2>
             <p className="text-xs text-palette-eggplant/70">Active tier pricing and included menu items.</p>
           </div>
 
