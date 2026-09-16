@@ -6,6 +6,7 @@ import { CATERING_PACKAGES } from '../../data/packageData';
 export default function BookingFormModal({ isOpen, onClose, initialData = null, onBookingSubmitted }) {
   const [activeFormType, setActiveFormType] = useState('booking');
   const [submittedSuccess, setSubmittedSuccess] = useState(null);
+  const [estimateDetails, setEstimateDetails] = useState(null);
 
   const [formData, setFormData] = useState({
     customerName: '',
@@ -24,15 +25,28 @@ export default function BookingFormModal({ isOpen, onClose, initialData = null, 
 
   useEffect(() => {
     if (initialData) {
+      setEstimateDetails(initialData);
+      
+      let addonSummary = '';
+      if (initialData.addons) {
+        const activeAddons = Object.keys(initialData.addons)
+          .filter(k => initialData.addons[k])
+          .map(k => k === 'mocktailBar' ? 'Nannari Bar' : k === 'liveDosaBar' ? 'Live Mysuru Dosa Bar' : k === 'kaapiLounge' ? 'Filter Kaapi Lounge' : 'Jigarthanda Counter')
+          .join(', ');
+        if (activeAddons) addonSummary = ` | Live Add-ons: ${activeAddons}`;
+      }
+      
+      const autoNotes = initialData.estimatedCost
+        ? `[Estimator Quote] Package: ${initialData.packageName || 'Selected Package'} | Guests: ${initialData.guestCount} | Meal Format: ${initialData.mealType}${addonSummary} | Total Estimated Investment: ₹${initialData.estimatedCost.toLocaleString('en-IN')} (Incl. 18% GST)`
+        : '';
+
       setFormData((prev) => ({
         ...prev,
         eventType: initialData.eventType || prev.eventType,
         guestCount: initialData.guestCount || prev.guestCount,
         packageId: initialData.packageId || prev.packageId,
         mealType: initialData.mealType || prev.mealType,
-        notes: initialData.estimatedCost 
-          ? `Estimated Budget: ₹${initialData.estimatedCost.toLocaleString('en-IN')}` 
-          : prev.notes
+        notes: autoNotes || prev.notes
       }));
     }
   }, [initialData]);
@@ -319,17 +333,51 @@ export default function BookingFormModal({ isOpen, onClose, initialData = null, 
                   {/* Live Cost Preview Card */}
                   {(() => {
                     const selPkg = CATERING_PACKAGES.find(p => p.id === formData.packageId) || CATERING_PACKAGES[1];
-                    const baseTotal = (selPkg?.pricePerGuest || 0) * (formData.guestCount || 0);
+                    const baseRate = selPkg?.pricePerGuest || 0;
+                    
+                    let addonPerGuest = 0;
+                    if (estimateDetails?.addons) {
+                      const addonPrices = { mocktailBar: 40, liveDosaBar: 60, kaapiLounge: 30, jigarthandaCounter: 40 };
+                      addonPerGuest = Object.keys(estimateDetails.addons).reduce((sum, key) => {
+                        return sum + (estimateDetails.addons[key] ? addonPrices[key] : 0);
+                      }, 0);
+                    }
+
+                    const effectiveRate = baseRate + addonPerGuest;
+                    const rawSubtotal = effectiveRate * (formData.guestCount || 0);
+                    const discountRate = formData.guestCount >= 300 ? 0.08 : formData.guestCount >= 200 ? 0.05 : 0;
+                    const discountAmount = Math.round(rawSubtotal * discountRate);
+                    const subtotalAfterDiscount = rawSubtotal - discountAmount;
+                    const gstTax = Math.round(subtotalAfterDiscount * 0.18);
+                    const calculatedTotal = subtotalAfterDiscount + gstTax;
+
+                    const displayTotal = estimateDetails?.estimatedCost && formData.guestCount === estimateDetails.guestCount && formData.packageId === estimateDetails.packageId
+                      ? estimateDetails.estimatedCost
+                      : calculatedTotal;
+
                     return (
-                      <div className="bg-palette-lilacLight p-3.5 rounded-2xl border border-palette-lilac/40 flex items-center justify-between text-xs shadow-inner">
-                        <div>
-                          <span className="font-extrabold uppercase text-[10px] text-palette-eggplant/70 block">Estimated Package Subtotal</span>
-                          <span className="font-sans font-extrabold text-lg text-palette-eggplant tracking-tight">₹{baseTotal.toLocaleString('en-IN')}</span>
+                      <div className="bg-gradient-to-r from-palette-lilacLight via-white to-palette-shamrock/10 p-4 rounded-2xl border-2 border-palette-shamrock/40 space-y-2 shadow-inner">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <span className="font-extrabold uppercase text-[10px] text-palette-eggplant/70 block">
+                              {estimateDetails ? '✨ Forwarded Estimator Cost Quote' : 'Estimated Total Investment'}
+                            </span>
+                            <span className="font-sans font-black text-2xl text-palette-eggplant tracking-tight">
+                              ₹{displayTotal.toLocaleString('en-IN')}
+                            </span>
+                          </div>
+                          <div className="text-right">
+                            <span className="text-palette-shamrockDark font-black block text-sm">₹{effectiveRate} / guest</span>
+                            <span className="text-[10px] text-palette-eggplant/70 font-semibold">(Incl. 18% GST & Add-ons)</span>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <span className="text-palette-shamrockDark font-extrabold block">₹{selPkg.pricePerGuest} / guest</span>
-                          <span className="text-[10px] text-palette-eggplant/70 font-semibold">Min. {selPkg.minGuests} Guests</span>
-                        </div>
+
+                        {estimateDetails && (
+                          <div className="pt-2 border-t border-palette-lilac/40 flex items-center justify-between text-[11px] font-bold text-palette-eggplant/80">
+                            <span>Quote Locked: <strong>{formData.guestCount} Guests</strong> ({selPkg.name})</span>
+                            <span className="text-palette-shamrockDark font-extrabold">✓ Breakdown Auto-Filled Below</span>
+                          </div>
+                        )}
                       </div>
                     );
                   })()}
