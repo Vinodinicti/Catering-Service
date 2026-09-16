@@ -1,24 +1,13 @@
 import React, { useState } from 'react';
-import { Calculator, Users, Sparkles, ArrowRight, CheckCircle2, TrendingDown, Flame, UtensilsCrossed, Bot, Zap, MessageSquare, Send, RefreshCw } from 'lucide-react';
+import { Calculator, Users, Sparkles, ArrowRight, CheckCircle2, TrendingDown, Flame, UtensilsCrossed } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { CATERING_PACKAGES } from '../../data/packageData';
 
 export default function InstantEstimator({ onBookWithEstimate, isModal = false }) {
-  const [activeMode, setActiveMode] = useState('manual'); // 'manual' | 'ai'
   const [eventType, setEventType] = useState('Grand Royal South Wedding');
   const [guestCount, setGuestCount] = useState(150);
   const [selectedPackageId, setSelectedPackageId] = useState('pkg-gold');
   const [mealType, setMealType] = useState('Banana Leaf Feast & Live Counters');
-  
-  // AI Agent Assistant State
-  const [aiPrompt, setAiPrompt] = useState('');
-  const [isAiThinking, setIsAiThinking] = useState(false);
-  const [aiRecommendation, setAiRecommendation] = useState({
-    title: 'AI Master Chef Recommendation',
-    advice: 'Selected Gold Regal Dakshin Feast for 150 guests. Added Live Dosa & Kaapi Lounges for authentic South Indian flavor.',
-    matchScore: 98,
-    highlight: 'Includes 5% Volume Discount + Free Live Setup'
-  });
 
   // Optional add-ons
   const [addons, setAddons] = useState({
@@ -93,204 +82,60 @@ export default function InstantEstimator({ onBookWithEstimate, isModal = false }
     });
   };
 
-  // AI Agent Processing Logic
-  const handleRunAiAgent = (customText) => {
-    const text = (customText || aiPrompt).toLowerCase();
-    setIsAiThinking(true);
-
-    setTimeout(() => {
-      setIsAiThinking(false);
-
-      if (text.includes('wedding') || text.includes('marriage') || text.includes('300') || text.includes('grand')) {
-        setEventType('Grand Royal South Wedding');
-        setGuestCount(text.includes('300') ? 300 : text.includes('500') ? 500 : 250);
-        setSelectedPackageId('pkg-gold');
-        setMealType('Banana Leaf Feast & Live Counters');
-        setAddons({ mocktailBar: true, liveDosaBar: true, kaapiLounge: true, jigarthandaCounter: true });
-        setAiRecommendation({
-          title: 'Imperial Wedding Feast Plan',
-          advice: 'Recommended Gold Regal Dakshin Feast with 4 live interactive counters. Maximum 8% volume discount unlocked!',
-          matchScore: 99,
-          highlight: 'Saved ₹' + Math.round((1199 - 750) * 300).toLocaleString('en-IN') + ' with tier pricing'
-        });
-      } else if (text.includes('tiffin') || text.includes('housewarming') || text.includes('birthday') || text.includes('budget') || text.includes('50')) {
-        setEventType(text.includes('housewarming') ? 'Housewarming Ceremony' : 'Traditional Tiffin Function');
-        setGuestCount(text.includes('50') ? 50 : text.includes('40') ? 40 : 60);
-        setSelectedPackageId('pkg-silver');
-        setMealType('High Tea & South Tiffin Snacks');
-        setAddons({ mocktailBar: false, liveDosaBar: true, kaapiLounge: true, jigarthandaCounter: false });
-        setAiRecommendation({
-          title: 'Compact Traditional Tiffin Plan',
-          advice: 'Optimized Dakshin Silver Crown with Mysuru Dosa Bar & Filter Kaapi lounge. Ideal for intimate family functions.',
-          matchScore: 97,
-          highlight: 'Budget-friendly at ₹450/guest'
-        });
-      } else if (text.includes('luxury') || text.includes('platinum') || text.includes('vip') || text.includes('corporate') || text.includes('gala')) {
-        setEventType('Corporate Gala Feast');
-        setGuestCount(text.includes('200') ? 200 : 150);
-        setSelectedPackageId('pkg-platinum');
-        setMealType('Plated Imperial Dining');
-        setAddons({ mocktailBar: true, liveDosaBar: true, kaapiLounge: true, jigarthandaCounter: true });
-        setAiRecommendation({
-          title: 'Imperial Luxury Gala Plan',
-          advice: 'Selected Imperial Royal South Platinum tier with 5-State South Indian live handi counters and butler service.',
-          matchScore: 100,
-          highlight: 'Includes 7 Executive Starters & Belgian Fountain'
-        });
-      } else {
-        // Default smart AI tune
-        setSelectedPackageId('pkg-gold');
-        setAddons({ mocktailBar: true, liveDosaBar: true, kaapiLounge: true, jigarthandaCounter: false });
-        setAiRecommendation({
-          title: 'Balanced Royal Dakshin Plan',
-          advice: 'Tailored for your requirements with live interactive counters and 100% transparent pricing.',
-          matchScore: 96,
-          highlight: 'Guaranteed 30-day rate lock'
-        });
-      }
-    }, 400);
-  };
-
   const sliderPercent = Math.min(100, Math.max(0, ((guestCount - 25) / (2500 - 25)) * 100));
 
   return (
     <div className={`w-full bg-gradient-to-br from-white via-palette-lace to-palette-lilacLight/40 text-palette-eggplant rounded-3xl border-2 border-palette-lilac/40 shadow-2xl p-4 sm:p-8 relative overflow-hidden ${isModal ? '' : 'max-w-6xl mx-auto'}`}>
       
-      {/* Background Animated Ambient Lilac & Shamrock Glows */}
+      {/* Background Ambient Lilac & Shamrock Glows */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-palette-lilac/25 rounded-full blur-3xl pointer-events-none animate-pulse" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-palette-shamrock/20 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Header with AI Mode Switcher */}
-      <div className="mb-6 sm:mb-8 text-center sm:text-left flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-palette-lilac/30 pb-6 relative z-10">
-        <div>
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-palette-eggplant via-purple-900 to-palette-eggplant text-white px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider mb-2 shadow-md border border-palette-shamrock/40">
-            <Bot className="w-4 h-4 text-palette-shamrock animate-pulse" />
-            <span>AI-Powered Catering Concierge</span>
-          </div>
-          <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-extrabold text-palette-eggplant">
-            Instant Catering Cost <span className="bg-gradient-to-r from-palette-eggplant via-palette-shamrock to-palette-eggplant bg-clip-text text-transparent">Estimator</span>
-          </h2>
-          <p className="text-palette-eggplant/80 text-xs sm:text-sm mt-1 font-medium">
-            Let our AI Master Chef calculate or customize your South Indian event quote in real time.
-          </p>
+      {/* Header */}
+      <div className="mb-6 sm:mb-8 text-center sm:text-left border-b border-palette-lilac/30 pb-6 relative z-10">
+        <div className="inline-flex items-center gap-2 bg-palette-eggplant text-white px-4 py-1.5 rounded-full text-xs font-extrabold uppercase tracking-wider mb-2 shadow-md border border-palette-shamrock/40">
+          <Calculator className="w-4 h-4 text-palette-shamrock" />
+          <span>Interactive Estimator</span>
         </div>
-
-        {/* Mode Toggle Switch */}
-        <div className="bg-palette-eggplant/5 p-1.5 rounded-2xl border border-palette-lilac/50 flex items-center gap-1 shadow-inner">
-          <button
-            onClick={() => setActiveMode('manual')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all duration-300 flex items-center gap-1.5 ${
-              activeMode === 'manual'
-                ? 'bg-palette-eggplant text-white shadow-md'
-                : 'text-palette-eggplant/70 hover:text-palette-eggplant'
-            }`}
-          >
-            <Calculator className="w-3.5 h-3.5 text-palette-shamrock" />
-            <span>Smart Controls</span>
-          </button>
-          <button
-            onClick={() => setActiveMode('ai')}
-            className={`px-3.5 py-2 rounded-xl text-xs font-extrabold transition-all duration-300 flex items-center gap-1.5 ${
-              activeMode === 'ai'
-                ? 'bg-gradient-to-r from-palette-shamrock to-palette-shamrockDark text-white shadow-md'
-                : 'text-palette-eggplant/70 hover:text-palette-eggplant'
-            }`}
-          >
-            <Zap className="w-3.5 h-3.5 text-white animate-bounce" />
-            <span>Ask AI Chef 🤖</span>
-          </button>
-        </div>
+        <h2 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-extrabold text-palette-eggplant">
+          Instant Catering Cost <span className="bg-gradient-to-r from-palette-eggplant via-palette-shamrock to-palette-eggplant bg-clip-text text-transparent">Calculator</span>
+        </h2>
+        <p className="text-palette-eggplant/80 text-xs sm:text-sm mt-1 font-medium">
+          Select your event type, guest count, and live counters to calculate your South Indian catering quotation in real time.
+        </p>
       </div>
 
-      {/* AI Master Chef Assistant Banner */}
-      <div className="mb-6 bg-gradient-to-r from-palette-eggplant via-purple-900 to-palette-eggplantDark text-white p-4 sm:p-5 rounded-2xl border border-palette-shamrock/40 shadow-lg flex flex-col sm:flex-row items-center justify-between gap-4 relative overflow-hidden z-10">
-        <div className="flex items-center gap-3.5">
-          <div className="w-12 h-12 rounded-2xl bg-palette-shamrock text-white flex items-center justify-center shadow-md shrink-0 border border-white/30 animate-pulse">
-            <Bot className="w-6 h-6 text-white" />
-          </div>
-          <div className="text-center sm:text-left">
-            <div className="flex items-center justify-center sm:justify-start gap-2">
-              <h4 className="font-serif font-extrabold text-base text-white">Chef Sundaram — AI Catering Agent</h4>
-              <span className="bg-palette-shamrock/30 text-palette-shamrock text-[10px] font-black uppercase px-2 py-0.5 rounded-full border border-palette-shamrock/50">
-                Online ● Active
-              </span>
-            </div>
-            <p className="text-xs text-palette-lilac/90 mt-0.5 font-medium">
-              "{aiRecommendation.advice}"
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/20 text-center shrink-0">
-          <span className="text-[10px] uppercase font-bold text-palette-shamrock block">AI Match Score</span>
-          <span className="font-sans text-lg font-black text-white">{aiRecommendation.matchScore}% Match</span>
-        </div>
-      </div>
-
-      {/* AI Quick Prompt Chips */}
+      {/* Quick Event Presets */}
       <div className="mb-6 space-y-2 relative z-10">
         <span className="text-[10px] font-extrabold uppercase tracking-wider text-palette-eggplant/70 flex items-center gap-1">
           <Sparkles className="w-3 h-3 text-palette-shamrock" />
-          <span>Quick AI Event Presets (Click to Auto-Calculate):</span>
+          <span>Quick Event Presets:</span>
         </span>
         <div className="flex flex-wrap gap-2">
           {[
-            { label: '🌸 300 Guest Grand Royal Wedding', query: 'Grand 300 guest wedding lunch with live dosa bar' },
-            { label: '🏡 50 Guest Intimate Housewarming', query: 'Intimate housewarming for 50 guests with filter kaapi' },
-            { label: '🏢 150 Person Corporate VIP Gala', query: 'Luxury corporate gala for 150 guests' },
-            { label: '🎂 60th Birthday Tiffin Function', query: 'Traditional tiffin function for 60 guests' },
-          ].map((chip) => (
+            { label: '🌸 300 Guest Grand Royal Wedding', type: 'Grand Royal South Wedding', guests: 300, pkg: 'pkg-gold' },
+            { label: '🏡 50 Guest Intimate Housewarming', type: 'Housewarming Ceremony', guests: 50, pkg: 'pkg-silver' },
+            { label: '🏢 150 Person Corporate VIP Gala', type: 'Corporate Gala Feast', guests: 150, pkg: 'pkg-platinum' },
+            { label: '🎂 60th Birthday Tiffin Function', type: 'Traditional Tiffin Function', guests: 60, pkg: 'pkg-silver' },
+          ].map((preset) => (
             <button
-              key={chip.label}
+              key={preset.label}
               onClick={() => {
-                setAiPrompt(chip.query);
-                handleRunAiAgent(chip.query);
+                setEventType(preset.type);
+                setGuestCount(preset.guests);
+                setSelectedPackageId(preset.pkg);
               }}
-              className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-palette-shamrock hover:text-white text-palette-eggplant border border-palette-laceBorder shadow-sm transition-all duration-200 hover:scale-105"
+              className="px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-palette-shamrock hover:text-white text-palette-eggplant border border-palette-laceBorder shadow-sm transition-all duration-200 hover:scale-105 cursor-pointer"
             >
-              {chip.label}
+              {preset.label}
             </button>
           ))}
         </div>
       </div>
 
-      {/* AI Prompt Custom Input */}
-      {activeMode === 'ai' && (
-        <div className="mb-6 relative z-10">
-          <div className="relative flex items-center">
-            <MessageSquare className="w-4 h-4 absolute left-4 text-palette-eggplant/40" />
-            <input
-              type="text"
-              placeholder="Ask AI Chef e.g., 'Plan a 200-guest wedding reception with live tawa fish and kaapi under ₹1.5 Lakhs'..."
-              value={aiPrompt}
-              onChange={(e) => setAiPrompt(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleRunAiAgent()}
-              className="w-full pl-11 pr-28 py-3 bg-white border-2 border-palette-shamrock/50 rounded-2xl text-xs sm:text-sm font-bold text-palette-eggplant placeholder-palette-eggplant/40 focus:outline-none focus:ring-2 focus:ring-palette-shamrock/30 shadow-inner"
-            />
-            <button
-              onClick={() => handleRunAiAgent()}
-              disabled={isAiThinking}
-              className="absolute right-2 px-4 py-2 bg-palette-shamrock hover:bg-palette-shamrockDark text-white text-xs font-extrabold rounded-xl shadow-md flex items-center gap-1.5 transition-all"
-            >
-              {isAiThinking ? (
-                <>
-                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                  <span>Thinking...</span>
-                </>
-              ) : (
-                <>
-                  <span>Ask AI</span>
-                  <Send className="w-3.5 h-3.5" />
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 relative z-10">
         
-        {/* Left Column: Form Controls */}
+        {/* Left Column: Smart Form Controls */}
         <div className="lg:col-span-7 space-y-6">
           
           {/* 1. Event Type */}
