@@ -98,7 +98,7 @@ export default function App() {
           }
         }}
         onOpenEstimate={() => setIsEstimateModalOpen(true)}
-        onOpenBooking={() => handleOpenBooking()}
+        onOpenBooking={(data) => handleOpenBooking(data)}
       />
 
       {/* Main Content Router */}
@@ -107,26 +107,26 @@ export default function App() {
           <HomePage
             setActiveTab={setActiveTab}
             onOpenEstimate={() => setIsEstimateModalOpen(true)}
-            onOpenBooking={() => handleOpenBooking()}
+            onOpenBooking={(data) => handleOpenBooking(data)}
           />
         )}
 
         {activeTab === 'about' && (
           <AboutPage
-            onOpenBooking={() => handleOpenBooking()}
+            onOpenBooking={(data) => handleOpenBooking(data)}
           />
         )}
 
         {activeTab === 'catering' && (
           <CateringPage
             onOpenEstimate={() => setIsEstimateModalOpen(true)}
-            onOpenBooking={() => handleOpenBooking()}
+            onOpenBooking={(data) => handleOpenBooking(data)}
           />
         )}
 
         {activeTab === 'menu' && (
           <MenuPage
-            onOpenBooking={() => handleOpenBooking()}
+            onOpenBooking={(data) => handleOpenBooking(data)}
           />
         )}
 
@@ -167,7 +167,7 @@ export default function App() {
       <Footer
         setActiveTab={setActiveTab}
         onOpenEstimate={() => setIsEstimateModalOpen(true)}
-        onOpenBooking={() => handleOpenBooking()}
+        onOpenBooking={(data) => handleOpenBooking(data)}
         onOpenAdmin={handleOpenAdminPortal}
       />
 

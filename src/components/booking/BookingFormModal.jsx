@@ -24,7 +24,7 @@ export default function BookingFormModal({ isOpen, onClose, initialData = null, 
   });
 
   useEffect(() => {
-    if (initialData) {
+    if (isOpen && initialData) {
       setEstimateDetails(initialData);
       
       let addonSummary = '';
@@ -42,14 +42,16 @@ export default function BookingFormModal({ isOpen, onClose, initialData = null, 
 
       setFormData((prev) => ({
         ...prev,
-        eventType: initialData.eventType || prev.eventType,
-        guestCount: initialData.guestCount || prev.guestCount,
-        packageId: initialData.packageId || prev.packageId,
-        mealType: initialData.mealType || prev.mealType,
-        notes: autoNotes || prev.notes
+        eventType: initialData.eventType || 'Grand Royal South Wedding',
+        guestCount: initialData.guestCount || 150,
+        packageId: initialData.packageId || 'pkg-gold',
+        mealType: initialData.mealType || 'Banana Leaf Feast & Live Counters',
+        notes: autoNotes
       }));
+    } else if (isOpen && !initialData) {
+      setEstimateDetails(null);
     }
-  }, [initialData]);
+  }, [isOpen, initialData]);
 
   if (!isOpen) return null;
 
