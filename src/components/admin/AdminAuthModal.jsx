@@ -89,12 +89,6 @@ export default function AdminAuthModal({ isOpen, onClose, onAuthenticate }) {
           </button>
         </form>
 
-        <div className="bg-palette-lilacLight p-3.5 rounded-2xl border border-palette-lilac/40 text-center">
-          <p className="text-[11px] font-bold text-palette-eggplant/80">
-            🔑 Security Hint: Passcode is <span className="font-extrabold text-palette-eggplant underline">admin123</span>
-          </p>
-        </div>
-
       </div>
     </div>
   );
